@@ -1,8 +1,14 @@
 package com.richard;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.UnaryOperator;
+
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Hello world!
@@ -10,6 +16,29 @@ import java.util.function.UnaryOperator;
  */
 public class Othello 
 {
+	private Logger logger = LoggerFactory.getLogger(Othello.class);
+	private static final Set<Character> ROW_INDEX = new HashSet<Character>();
+	private static final Set<Character> COL_INDEX = new HashSet<Character>();
+	static {
+		ROW_INDEX.add('1');
+		ROW_INDEX.add('2');
+		ROW_INDEX.add('3');
+		ROW_INDEX.add('4');
+		ROW_INDEX.add('5');
+		ROW_INDEX.add('6');
+		ROW_INDEX.add('7');
+		ROW_INDEX.add('8');
+		
+		COL_INDEX.add('a');
+		COL_INDEX.add('b');
+		COL_INDEX.add('c');
+		COL_INDEX.add('d');
+		COL_INDEX.add('e');
+		COL_INDEX.add('f');
+		COL_INDEX.add('g');
+		COL_INDEX.add('h');
+	}
+	
 	public static void main( String[] args )
     {
         System.out.println( "Hello World!" );
@@ -18,6 +47,9 @@ public class Othello
 	protected final char getblank() { return '-'; }
 	protected final char getdark() { return 'X'; }
 	protected final char getlight() { return 'O'; }
+	
+	protected final Set<Character> getrowindices() { return ROW_INDEX; }
+	protected final Set<Character> getcolindices() { return COL_INDEX; }
     
     /**
      * This method aims to initialize
@@ -108,6 +140,41 @@ public class Othello
     
     protected UnaryOperator<Integer> getDownRightOperator() {
     	return i->getRightOperator().apply(getDownOperator().apply(i));
+    }
+    
+    protected int convertCharsCoordinates2Int(char c1, char c2) {
+    	int row = c1 - 48 - 1; //48 is the ascii value of '1', '1' -> 1, zero base -> 0
+    	int col = c2 - 97; // 97 is the ascii value of 'a'
+    	logger.debug("c1: {} c2: {} row: {} col:{}", c1, c2, row, col);
+    	if (row >= 0 && row <= 7 && col >= 0 && col <= 7) {
+    		return row * 8 + col;
+    	}
+    	else {
+    		throw new IllegalArgumentException("out of the bound " + row + " " + col);
+    	}
+    }
+    
+    
+    protected int convertStrCoordinates2Int(String input) {
+    	if (StringUtils.isBlank(input)) {
+    		throw new IllegalArgumentException("blank string not accepted");
+    	}
+    	
+    	if (input.length() != 2) {
+    		throw new IllegalArgumentException("2 char length only");
+    	}
+    	
+    	char c1 = input.charAt(0);
+    	char c2 = input.charAt(1);
+    	
+    	if (getrowindices().contains(c1) && getcolindices().contains(c2)) {
+    		return convertCharsCoordinates2Int(c1, c2);
+    	} else if (getrowindices().contains(c2) && getcolindices().contains(c1)) {
+    		return convertCharsCoordinates2Int(c2, c1);
+    	} else {
+    		throw new IllegalArgumentException("unknown combination: " + input);
+    	}
+    	
     }
     
     protected String getchessboardStr(char[] input) {

@@ -260,4 +260,91 @@ public class OthelloTest {
 		assertTrue(29 == obj.getDownRightOperator().apply(20));
 		assertTrue(42 == obj.getDownRightOperator().apply(33));
 	}
+	
+	@Test
+	public void testConvertStrCoordinates2IntInvalid1() {
+		//blank string
+		int exceptioncaught = 0;
+		try {
+			obj.convertStrCoordinates2Int(null);
+		}
+		catch (Exception e) {
+			exceptioncaught++;
+		}
+		//blank string
+		try {
+			obj.convertStrCoordinates2Int("");
+		}
+		catch (Exception e) {
+			exceptioncaught++;
+		}
+		//too long
+		try {
+			obj.convertStrCoordinates2Int("12a");
+		}
+		catch (Exception e) {
+			exceptioncaught++;
+		}
+		//too short
+		try {
+			obj.convertStrCoordinates2Int("b");
+		}
+		catch (Exception e) {
+			exceptioncaught++;
+		}
+		assertTrue(4 == exceptioncaught);
+	}
+	
+	@Test
+	public void testConvertStrCoordinates2IntInvalid2() {
+		int exceptioncaught = 0;
+		// same type
+		try {
+			obj.convertStrCoordinates2Int("ab");
+		}
+		catch (Exception e) {
+			exceptioncaught++;
+		}
+		try {
+			obj.convertStrCoordinates2Int("13");
+		}
+		catch (Exception e) {
+			exceptioncaught++;
+		}
+		assertTrue(2 == exceptioncaught);
+	}
+	
+	@Test
+	public void testConvertStrCoordinates2IntInvalid3() {
+		int exceptioncaught = 0;
+		// out of bound
+		try {
+			obj.convertStrCoordinates2Int("a9");
+		}
+		catch (Exception e) {
+			exceptioncaught++;
+		}
+		try {
+			obj.convertStrCoordinates2Int("z2");
+		}
+		catch (Exception e) {
+			exceptioncaught++;
+		}
+		try {
+			obj.convertStrCoordinates2Int("z9");
+		}
+		catch (Exception e) {
+			exceptioncaught++;
+		}
+		assertTrue(3 == exceptioncaught);
+	}
+	
+	@Test
+	public void testConvertStrCoordinates2IntValid() {
+		assertTrue(16==obj.convertStrCoordinates2Int("a3"));
+		assertTrue(16==obj.convertStrCoordinates2Int("3a"));
+		
+		assertTrue(33==obj.convertStrCoordinates2Int("b5"));
+		assertTrue(33==obj.convertStrCoordinates2Int("5b"));
+	}
 }
