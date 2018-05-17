@@ -161,4 +161,103 @@ public class OthelloTest {
 		assertTrue(1 == obj.getRightOperator().apply(0));
 		assertTrue(12 == obj.getRightOperator().apply(11));
 	}
+	
+	@Test
+	public void testUpLeftOperatorResultsInvalid() {
+		int exceptioncaught = 0;
+		try {
+			obj.getUpLeftOperator().apply(5);
+		}
+		catch (Exception e) {
+			exceptioncaught++;
+		}
+		
+		try {
+			obj.getUpLeftOperator().apply(8);
+		}
+		catch (Exception e) {
+			exceptioncaught++;
+		}
+		
+		try {
+			obj.getUpLeftOperator().apply(68);
+		}
+		catch (Exception e) {
+			exceptioncaught++;
+		}
+		
+		assertTrue(3 == exceptioncaught);
+	}
+	
+	@Test
+	public void testUpLeftOperatorResultsvalid() {
+		assertTrue(11 == obj.getUpLeftOperator().apply(20));
+		assertTrue(46 == obj.getUpLeftOperator().apply(55));
+	}
+	
+	@Test
+	public void testDownLeftOperatorResultsInvalid() {
+		int exceptioncaught = 0;
+		try {
+			obj.getDownLeftOperator().apply(57);
+		}
+		catch (Exception e) {
+			exceptioncaught++;
+		}
+		
+		try {
+			obj.getDownLeftOperator().apply(-1);
+		}
+		catch (Exception e) {
+			exceptioncaught++;
+		}
+		
+		try {
+			obj.getDownLeftOperator().apply(16);
+		}
+		catch (Exception e) {
+			exceptioncaught++;
+		}
+		
+		assertTrue(3 == exceptioncaught);
+	}
+	
+	@Test
+	public void testDownLeftOperatorResultsvalid() {
+		assertTrue(27 == obj.getDownLeftOperator().apply(20));
+		assertTrue(40 == obj.getDownLeftOperator().apply(33));
+	}
+	
+	@Test
+	public void testDownRightOperatorResultsInvalid() {
+		int exceptioncaught = 0;
+		try {
+			obj.getDownRightOperator().apply(-1);
+		}
+		catch (Exception e) {
+			exceptioncaught++;
+		}
+		
+		try {
+			obj.getDownRightOperator().apply(60);
+		}
+		catch (Exception e) {
+			exceptioncaught++;
+		}
+		
+		try {
+			obj.getDownRightOperator().apply(23);
+		}
+		catch (Exception e) {
+			exceptioncaught++;
+		}
+		
+		assertTrue(3 == exceptioncaught);
+	}
+	
+	@Test
+	public void testDownRightOperatorResultsvalid() {
+		assertTrue(29 == obj.getDownRightOperator().apply(20));
+		assertTrue(42 == obj.getDownRightOperator().apply(33));
+	}
 }

@@ -94,6 +94,22 @@ public class Othello
     	};
     }
     
+    protected UnaryOperator<Integer> getUpLeftOperator() {
+    	return i->getLeftOperator().apply(getUpOperator().apply(i));
+    }
+    
+    protected UnaryOperator<Integer> getUpRightOperator() {
+    	return i->getRightOperator().apply(getUpOperator().apply(i));
+    }
+    
+    protected UnaryOperator<Integer> getDownLeftOperator() {
+    	return i->getLeftOperator().apply(getDownOperator().apply(i));
+    }
+    
+    protected UnaryOperator<Integer> getDownRightOperator() {
+    	return i->getRightOperator().apply(getDownOperator().apply(i));
+    }
+    
     protected String getchessboardStr(char[] input) {
     	if (input == null) {
     		throw new IllegalArgumentException("chessboard null!");
