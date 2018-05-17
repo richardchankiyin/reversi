@@ -2,6 +2,7 @@ package com.richard;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.UnaryOperator;
 
 /**
  * Hello world!
@@ -16,7 +17,7 @@ public class Othello
 	
 	protected final char getblank() { return '-'; }
 	protected final char getdark() { return 'X'; }
-	protected final char getlight() { return '0'; }
+	protected final char getlight() { return 'O'; }
     
     /**
      * This method aims to initialize
@@ -43,5 +44,38 @@ public class Othello
     	return r;
     }
     
+    protected UnaryOperator<Integer> getUpOperator() {
+    	return i-> {
+    		if (i >= 8 && i <= 63) {
+    			return i - 8;
+    		}
+    		else {
+    			throw new IllegalArgumentException("not allowed");
+    		}
+    	};
+    }
+    
+    protected String getchessboardStr(char[] input) {
+    	if (input == null) {
+    		throw new IllegalArgumentException("chessboard null!");
+    	}
+    	
+    	if (input.length != 64) {
+    		throw new IllegalArgumentException("chessboard length <> 64!");
+    	}
+    	
+    	StringBuilder str = new StringBuilder();
+    	for (int i = 1; i <= 8; i++) {
+    		str.append(i).append(' ');
+    		for (int j = 0; j <= 7; j++) {
+    			str.append(input[(i - 1) * 8 + j]);
+    		}
+    		str.append('\n');
+    	}
+    	
+    	// print foot row
+    	str.append("  abcdefgh\n");
+    	return str.toString();
+    }
     
 }
