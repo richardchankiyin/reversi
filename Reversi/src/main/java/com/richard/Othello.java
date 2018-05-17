@@ -1,7 +1,9 @@
 package com.richard;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.UnaryOperator;
@@ -47,6 +49,15 @@ public class Othello
 	protected final char getblank() { return '-'; }
 	protected final char getdark() { return 'X'; }
 	protected final char getlight() { return 'O'; }
+	protected final boolean isValidDisk(char input) {
+		return (input == getdark() || input == getlight());
+	}
+	protected final char getCounterpartyDisk(char input) {
+		if (!isValidDisk(input)) {
+			throw new IllegalArgumentException("input disk invalid: " + input);
+		}
+		return input == getdark() ? getlight() : getdark();
+	}
 	
 	protected final Set<Character> getrowindices() { return ROW_INDEX; }
 	protected final Set<Character> getcolindices() { return COL_INDEX; }
@@ -175,6 +186,37 @@ public class Othello
     		throw new IllegalArgumentException("unknown combination: " + input);
     	}
     	
+    }
+    
+    
+    protected List<Integer> getListOfCoordinatesCanTurnDisk(char diskType, char[] chessboard, UnaryOperator<Integer> checkdirectionops, int startingpos) {
+    	if (!isValidDisk(diskType))
+    		throw new IllegalArgumentException("disk invalid: " + diskType);
+    	
+    	boolean iscontinue = true;
+    	boolean isvalid = false;
+    	int pos = startingpos;
+    	List<Integer> result = new ArrayList<Integer>();
+    	while (iscontinue) {
+    		try {
+    			int nextpos = checkdirectionops.apply(pos);
+    			if (chessboard[nextpos] == getCounterpartyDisk(diskType)) {
+    				result.add(nextpos);
+    				pos = nextpos;
+    			}
+    			else {
+    				iscontinue = false;
+    				isvalid = !result.isEmpty();
+    			}
+    			
+    		}
+    		catch (IllegalArgumentException e) {
+    			logger.debug("exception caught", e);
+    			iscontinue = false;
+    		}
+    	}
+    	
+    	return isvalid ? result : new ArrayList<Integer>();
     }
     
     protected String getchessboardStr(char[] input) {

@@ -2,6 +2,9 @@ package com.richard;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
+
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,6 +21,24 @@ public class OthelloTest {
 		obj = new Othello();
 	}
 
+	@Test
+	public void testIsValidDisk() {
+		assertTrue(obj.isValidDisk(obj.getdark()));
+		assertTrue(obj.isValidDisk(obj.getlight()));
+		assertFalse(obj.isValidDisk(obj.getblank()));
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void testGetCounterpartyDiskInvalid() {
+		obj.getCounterpartyDisk(obj.getblank());
+	}
+	
+	@Test
+	public void testGetCounterpartyDiskValid() {
+		assertEquals(obj.getlight(),obj.getCounterpartyDisk(obj.getdark()));
+		assertEquals(obj.getdark(),obj.getCounterpartyDisk(obj.getlight()));
+	}
+	
 	@Test
 	public void testInitChessBoard() {
 		char[] r = obj.initchessboard();
@@ -346,5 +367,29 @@ public class OthelloTest {
 		
 		assertTrue(33==obj.convertStrCoordinates2Int("b5"));
 		assertTrue(33==obj.convertStrCoordinates2Int("5b"));
+	}
+	
+	@Test
+	public void testGetListOfCoordinatesCanTurnDiskFound() {
+		char[] chessboard = obj.initchessboard();
+		List<Integer> result1 = obj.getListOfCoordinatesCanTurnDisk(obj.getdark(), chessboard, obj.getRightOperator(), 26);
+		logger.debug("result1:{}", result1);
+		assertEquals(1, result1.size());
+		assertTrue(27==result1.get(0));
+		
+		List<Integer> result2 = obj.getListOfCoordinatesCanTurnDisk(obj.getdark(), chessboard, obj.getDownOperator(), 19);
+		logger.debug("result2:{}", result2);
+		assertEquals(1, result2.size());
+		assertTrue(27==result2.get(0));
+		
+		List<Integer> result3 = obj.getListOfCoordinatesCanTurnDisk(obj.getdark(), chessboard, obj.getUpOperator(), 44);
+		logger.debug("result3:{}", result3);
+		assertEquals(1, result3.size());
+		assertTrue(36==result3.get(0));
+		
+		List<Integer> result4 = obj.getListOfCoordinatesCanTurnDisk(obj.getdark(), chessboard, obj.getLeftOperator(), 37);
+		logger.debug("result4:{}", result4);
+		assertEquals(1, result4.size());
+		assertTrue(36==result4.get(0));
 	}
 }
