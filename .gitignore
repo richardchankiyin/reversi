@@ -35,6 +35,8 @@ target/
 .settings/
 .classpath
 .project
+emoteSystemsTempFiles
+.metadata
 
 # NetBeans specific
 nbproject/private/
