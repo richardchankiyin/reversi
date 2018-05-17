@@ -55,6 +55,45 @@ public class Othello
     	};
     }
     
+    protected UnaryOperator<Integer> getDownOperator() {
+    	return i-> {
+    		if (i >= 0 && i <= 55) {
+    			return i + 8;
+    		}
+    		else {
+    			throw new IllegalArgumentException("not allowed");
+    		}
+    	};
+    }
+    
+    protected UnaryOperator<Integer> getLeftOperator() {
+    	return i-> {
+    		if (i >= 0 && i <= 63) {
+    			if (i % 8 == 0) {
+    				throw new IllegalArgumentException("left edge");
+    			} else {
+    				return i - 1;
+    			}
+    		} else {
+    			throw new IllegalArgumentException("not allowed");
+    		}
+    	};
+    }
+    
+    protected UnaryOperator<Integer> getRightOperator() {
+    	return i-> {
+    		if (i >= 0 && i <= 63) {
+    			if (i % 8 == 7) {
+    				throw new IllegalArgumentException("right edge");
+    			} else {
+    				return i + 1;
+    			}
+    		} else {
+    			throw new IllegalArgumentException("not allowed");
+    		}
+    	};
+    }
+    
     protected String getchessboardStr(char[] input) {
     	if (input == null) {
     		throw new IllegalArgumentException("chessboard null!");
