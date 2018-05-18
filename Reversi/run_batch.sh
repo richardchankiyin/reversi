@@ -1,3 +1,4 @@
 #!/bin/bash
-
-mvn exec:java -Dexec.mainClass="com.richard.OthelloBatchGame" -Dexec.args="$1"
+args="$1"
+echo "args--$args"
+mvn exec:java -Dexec.mainClass="com.richard.OthelloBatchGame" -Dexec.args="'$args'"

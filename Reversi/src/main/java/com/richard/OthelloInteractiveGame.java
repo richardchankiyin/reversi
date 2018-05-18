@@ -7,9 +7,6 @@ public class OthelloInteractiveGame {
 	private static Scanner scanner = new Scanner(System.in);
 	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		//output("test"); String r = input();
-		//output(r);
 		rungame();
 	}
 
@@ -17,15 +14,15 @@ public class OthelloInteractiveGame {
 		boolean isContinue = true;
 		Othello game = new Othello(100);
 		
-		output(game.getChessBoardStr());
+		output(game.getChessBoardStr() + "\n");
 		
 		while (isContinue) {
 			char player = game.getPlayer();
-			output(String.format("Player '%s' move:", player));
+			output(String.format("Player '%s' move ('pb' for passback):", player));
 			String step = input();
 			try {
 				game.playGameSingleRound(step);
-				output(game.getChessBoardStr());
+				output(game.getChessBoardStr() + "\n");
 			}
 			catch (InvalidMoveException ie) {
 				output("Invalid move. Please try again.\n\n");
