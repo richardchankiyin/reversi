@@ -153,6 +153,19 @@ public class Othello
     	return i->getRightOperator().apply(getDownOperator().apply(i));
     }
     
+    protected List<UnaryOperator<Integer>> getAllOperators() {
+    	List<UnaryOperator<Integer>> op = new ArrayList<UnaryOperator<Integer>>();
+    	op.add(getUpOperator());
+    	op.add(getDownOperator());
+    	op.add(getLeftOperator());
+    	op.add(getRightOperator());
+    	op.add(getUpLeftOperator());
+    	op.add(getUpRightOperator());
+    	op.add(getDownLeftOperator());
+    	op.add(getDownRightOperator());
+    	return op;
+    }
+    
     protected int convertCharsCoordinates2Int(char c1, char c2) {
     	int row = c1 - 48 - 1; //48 is the ascii value of '1', '1' -> 1, zero base -> 0
     	int col = c2 - 97; // 97 is the ascii value of 'a'
@@ -204,19 +217,56 @@ public class Othello
     				result.add(nextpos);
     				pos = nextpos;
     			}
+    			else if (chessboard[nextpos] == diskType && !result.isEmpty()) {
+    				// something absorbed and eventually meet the same disk type
+    				iscontinue = false;
+    				isvalid = true;
+    			}
     			else {
     				iscontinue = false;
-    				isvalid = !result.isEmpty();
+    				isvalid = false;
     			}
     			
     		}
     		catch (IllegalArgumentException e) {
     			logger.debug("exception caught", e);
     			iscontinue = false;
+    			isvalid = false;
     		}
     	}
-    	
+    	logger.debug("getListOfCoordinatesCanTurnDisk disk: {} op: {} startpos: {} isvalid: {} result: {}", diskType, checkdirectionops, startingpos, isvalid, result);
     	return isvalid ? result : new ArrayList<Integer>();
+    }
+    
+    protected List<Integer> getListOfCoordinatesCanTurnDisk(char diskType, char[] chessboard, int startpos) {
+    	// check disktype
+    	if (!isValidDisk(diskType))
+    		throw new IllegalArgumentException("not a valid disk");
+    	
+    	// checking whether startpos is within range and is blank
+    	if (startpos < 0 || startpos > 63) {
+    		throw new IllegalArgumentException("startpos not in range!" + startpos + " not within 0 to 63 inclusively");
+    	}
+    	
+    	// checking target position is blank or not
+    	if (chessboard[startpos] != getblank()) {
+    		throw new IllegalArgumentException("this position is not blank!");
+    	}
+    	
+    	List<Integer> result = new ArrayList<Integer>();
+    	
+    	getAllOperators().forEach(op->{result.addAll(getListOfCoordinatesCanTurnDisk(
+    		diskType, chessboard, op, startpos));});
+    	
+    	logger.debug("result from getListOfCoordinatesCanTurnDisk: {}", result);
+    	
+    	return result;
+    }
+    
+    
+    protected char[] updateChessBoard(char[] chessboard, char diskType, List<Integer> updatepos) {
+    	updatepos.forEach(i->{chessboard[i] = diskType; });
+    	return chessboard;
     }
     
     protected String getchessboardStr(char[] input) {

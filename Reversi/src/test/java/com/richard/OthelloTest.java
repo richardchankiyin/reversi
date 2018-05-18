@@ -1,9 +1,10 @@
 package com.richard;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Before;
@@ -418,5 +419,72 @@ public class OthelloTest {
 		List<Integer> result4 = obj.getListOfCoordinatesCanTurnDisk(obj.getdark(), chessboard, obj.getLeftOperator(), 1);
 		logger.debug("result4:{}", result4);
 		assertEquals(0, result4.size());
+	}
+	
+	@Test
+	public void getListOfCoordinatesCanTurnDiskNotValid() {
+		char[] chessboard = obj.initchessboard();
+		int exceptioncaught = 0;
+		try {
+			obj.getListOfCoordinatesCanTurnDisk(obj.getdark(), chessboard, -1);
+		}
+		catch (Exception e) {
+			exceptioncaught++;
+		}
+		try {
+			obj.getListOfCoordinatesCanTurnDisk(obj.getdark(), chessboard, 64);
+		}
+		catch (Exception e) {
+			exceptioncaught++;
+		}
+		try {
+			obj.getListOfCoordinatesCanTurnDisk(obj.getdark(), chessboard, 27);
+		}
+		catch (Exception e) {
+			exceptioncaught++;
+		}
+		
+		try {
+			obj.getListOfCoordinatesCanTurnDisk(obj.getblank(), chessboard, 26);
+		}
+		catch (Exception e) {
+			exceptioncaught++;
+		}
+		
+		assertTrue(4 == exceptioncaught);
+	}
+	
+	@Test
+	public void getListOfCoordinatesCanTurnDiskValid() {
+		char[] chessboard = obj.initchessboard();
+		List<Integer> result1 = obj.getListOfCoordinatesCanTurnDisk(obj.getdark(), chessboard, 26);
+		logger.debug("getListOfCoordinatesCanTurnDiskValid result1:{}", result1);
+		assertEquals(1, result1.size());
+		assertTrue(27==result1.get(0));
+		
+		List<Integer> result2 = obj.getListOfCoordinatesCanTurnDisk(obj.getdark(), chessboard, 18);
+		logger.debug("getListOfCoordinatesCanTurnDiskValid result2:{}", result2);
+		assertEquals(0, result2.size());
+	}
+	
+	@Test
+	public void testUpdateChessBoard() {
+		char[] chessboard = obj.initchessboard();
+		List<Integer> updatepos = Arrays.asList(0,1,2);
+		char[] newchessboard = obj.updateChessBoard(chessboard, obj.getlight(), updatepos);
+		StringBuilder str = new StringBuilder();
+		str.append("1 OOO-----").append('\n');
+		str.append("2 --------").append('\n');
+		str.append("3 --------").append('\n');
+		str.append("4 ---OX---").append('\n');
+		str.append("5 ---XO---").append('\n');
+		str.append("6 --------").append('\n');
+		str.append("7 --------").append('\n');
+		str.append("8 --------").append('\n');
+		str.append("  abcdefgh").append('\n');
+		String expect = str.toString();
+		String actual = obj.getchessboardStr(newchessboard);
+		logger.debug("actual:\n{}", actual);
+		assertEquals(expect,actual);
 	}
 }
