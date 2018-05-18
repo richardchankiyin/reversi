@@ -392,4 +392,16 @@ public class OthelloTest {
 		assertEquals(1, result4.size());
 		assertTrue(36==result4.get(0));
 	}
+	
+	@Test
+	public void testGetListOfCoordinatesCanTurnDiskNotFound() {
+		char[] chessboard = obj.initchessboard();
+		List<Integer> result1 = obj.getListOfCoordinatesCanTurnDisk(obj.getdark(), chessboard, obj.getRightOperator(), 18);
+		logger.debug("result1:{}", result1);
+		assertEquals(0, result1.size());
+		
+		List<Integer> result2 = obj.getListOfCoordinatesCanTurnDisk(obj.getdark(), chessboard, obj.getRightOperator(), 0);
+		logger.debug("result2:{}", result2);
+		assertEquals(0, result2.size());
+	}
 }
