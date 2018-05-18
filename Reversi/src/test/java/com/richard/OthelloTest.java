@@ -549,4 +549,84 @@ public class OthelloTest {
 		assertFalse(result2[0]);
 		assertTrue(result2[1]);
 	}
+	
+	@Test(expected=InvalidMoveException.class)
+	public void testPlayGameSingleStepInvalidMove1() {
+		Othello game = new Othello();
+		try {
+			// left upper corner far away from starting
+			game.playGameSingleRound("1a");
+		} catch (InvalidMoveException ie) {
+			assertTrue(0==game.getNoOfRoundsPlayed());
+			assertTrue(game.getStepsGoneThrough().isEmpty());
+			throw ie;
+		}
+		
+	}
+	
+	@Test(expected=InvalidMoveException.class)
+	public void testPlayGameSingleStepInvalidMove2() {
+		Othello game = new Othello();
+		try {
+			// attempt to move to a non-blank position
+			game.playGameSingleRound("4d");
+		} catch (InvalidMoveException ie) {
+			assertTrue(0==game.getNoOfRoundsPlayed());
+			assertTrue(game.getStepsGoneThrough().isEmpty());
+			throw ie;
+		}
+	}
+	
+	@Test
+	public void testPlayGameSingleStepValid1() {
+		Othello game = new Othello();
+		game.playGameSingleRound("3d");
+		assertTrue(1==game.getNoOfRoundsPlayed());
+		assertTrue(game.getLastRoundDetectedInvalid() < 0);
+		assertTrue(1==game.getStepsGoneThrough().size());
+		
+		StringBuilder str = new StringBuilder();
+		str.append("1 --------").append('\n');
+		str.append("2 --------").append('\n');
+		str.append("3 ---X----").append('\n');
+		str.append("4 ---XX---").append('\n');
+		str.append("5 ---XO---").append('\n');
+		str.append("6 --------").append('\n');
+		str.append("7 --------").append('\n');
+		str.append("8 --------").append('\n');
+		str.append("  abcdefgh").append('\n');
+		
+		String expect = str.toString();
+		String actual = game.getChessBoardStr();
+		
+		logger.debug("testPlayGameSingleStepValid1 actual:\n{}", actual);
+		assertEquals(expect,actual);
+		
+	}
+	
+	@Test
+	public void testPlayGameSingleStepValid2() {
+		Othello game = new Othello();
+		game.playGameSingleRound("4c");
+		assertTrue(1==game.getNoOfRoundsPlayed());
+		assertTrue(game.getLastRoundDetectedInvalid() < 0);
+		assertTrue(1==game.getStepsGoneThrough().size());
+		
+		StringBuilder str = new StringBuilder();
+		str.append("1 --------").append('\n');
+		str.append("2 --------").append('\n');
+		str.append("3 --------").append('\n');
+		str.append("4 --XXX---").append('\n');
+		str.append("5 ---XO---").append('\n');
+		str.append("6 --------").append('\n');
+		str.append("7 --------").append('\n');
+		str.append("8 --------").append('\n');
+		str.append("  abcdefgh").append('\n');
+		
+		String expect = str.toString();
+		String actual = game.getChessBoardStr();
+		
+		logger.debug("testPlayGameSingleStepValid2 actual:\n{}", actual);
+		assertEquals(expect,actual);
+	}
 }

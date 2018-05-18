@@ -1,6 +1,7 @@
 package com.richard;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -427,6 +428,14 @@ public class Othello
     	return str.toString();
     }
     
+    /**
+     * Base on the noofround played to determine upcoming
+     * which diskType can move. 0,2,4.... for getdark()
+     * 1,3,5.... for getlight()
+     * 
+     * @param noOfRoundsPlayed
+     * @return
+     */
     protected char getPlayerBasedOnRoundsPlayed(int noOfRoundsPlayed) {
     	if (noOfRoundsPlayed < 0)
     		throw new IllegalArgumentException("not accept negative");
@@ -486,12 +495,12 @@ public class Othello
     			, iscurrentinvalid};
     }
     
-    /********** instance variables and public methods ***************/
+    /********** instance variables and public/non-mutable private methods ***************/
     private char[] gamechessboard = null;
     private int noofrounds = 0;
     private long sleeptimeperround = 1000;
     private List<String> stepsGoneThrough = new ArrayList<String>();
-    private int lastRoundDetectedInvalid = -1;
+    private int lastRoundDetectedInvalid = -2;
     private boolean isEndGame = false;
     
     public Othello(long sleeptimeperround) {
@@ -504,7 +513,85 @@ public class Othello
     
     public boolean isEndGame() { return isEndGame; }
     
-    public void playGame(String step) {
+    public int getNoOfRoundsPlayed() { return noofrounds; }
+    
+    public int getLastRoundDetectedInvalid() { return lastRoundDetectedInvalid; }
+    
+    public List<String> getStepsGoneThrough() { 
+    	return Arrays.asList(
+    			stepsGoneThrough.toArray(
+    					new String[stepsGoneThrough.size()])); 
+    }
+    
+    public String getChessBoardStr() {
+    	return this.getchessboardStr(gamechessboard);
+    }
+    
+    public void playGameSingleRound(String step) {
+    	preplayGame();
+    	playGameCore(step);
+    	postplayGame();
+    }
+    
+    private void preplayGame() {
+    	boolean[] status = isEndGameDetected(gamechessboard, lastRoundDetectedInvalid, noofrounds);
+    	isEndGame = status[0];
+    	if (status[1])
+    		lastRoundDetectedInvalid = noofrounds;
+    }
+    
+    private void postplayGame() {
+    	try {
+    		Thread.sleep(sleeptimeperround);
+    	}
+    	catch (InterruptedException e) {
+    		logger.warn("sleep interrupted",e);
+    	}
+    }
+
+    private void playGameCore(String step) {
+    	if (isEndGame()) {
+    		throw new GameIsOverException();
+    	}
     	
+    	if (this.isPassBackRequest(step)) {
+    		// add 1 more round
+    		noofrounds++;
+    		stepsGoneThrough.add(step);
+    		
+    	} else {
+    		try {
+    			// get the startpos request
+    			int startpos = convertStrCoordinates2Int(step);
+    			// get disk type
+    			char diskType = getPlayerBasedOnRoundsPlayed(noofrounds);
+    			
+    			// get affecteddiskpos
+    			List<Integer> affecteddiskpos= getListOfCoordinatesCanTurnDisk(diskType, gamechessboard, startpos);
+    			
+    			logger.info("noofroundplayed: {} diskType: {} step: {} startpos: {} affecteddiskpos: {}", noofrounds, diskType, step, startpos, affecteddiskpos);
+    			
+    			// check this move has affected disk position
+    			if (affecteddiskpos.isEmpty()) {
+    				throw new IllegalArgumentException("this move involves no counterparty disk pos affected!");
+    			}
+    			
+    			// for updating chessboard, include the position to be moved
+    			affecteddiskpos.add(startpos);
+    			// update the chessboard
+    			this.updateChessBoard(gamechessboard, diskType, affecteddiskpos);
+    			
+    			// update rounds and step gone thru
+    			noofrounds++;
+        		stepsGoneThrough.add(step);
+        		
+    		}
+    		catch (IllegalArgumentException e) {
+    			//as this move is invalid, we did not
+    			//increment noofrounds and record
+    			//step
+    			throw new InvalidMoveException(e);
+    		}
+    	}
     }
 }
