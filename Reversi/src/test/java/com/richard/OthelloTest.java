@@ -696,4 +696,31 @@ public class OthelloTest {
 		logger.debug("testPlayGameSingleStepValid4 actual:\n{}", actual);
 		assertEquals(expect,actual);
 	}
+	
+	@Test
+	public void testPlayGame() {
+		Othello game = new Othello();
+		String inputSteps = "f5, 6f, f7, 4f, f3, 3e, d3, c5";
+		game.playGame(inputSteps);
+		assertTrue(8==game.getNoOfRoundsPlayed());
+		List<String> steps = Arrays.asList(new String[]{"f5", "6f", "f7", "4f", "f3", "3e", "d3", "c5"});
+		assertEquals(steps, game.getStepsGoneThrough());
+		
+		StringBuilder str = new StringBuilder();
+		str.append("1 --------").append('\n');
+		str.append("2 --------").append('\n');
+		str.append("3 ---XXX--").append('\n');
+		str.append("4 ---XXX--").append('\n');
+		str.append("5 --OOOX--").append('\n');
+		str.append("6 -----X--").append('\n');
+		str.append("7 -----X--").append('\n');
+		str.append("8 --------").append('\n');
+		str.append("  abcdefgh").append('\n');
+		
+		String expect = str.toString();
+		String actual = game.getChessBoardStr();
+		
+		logger.debug("testPlayGame actual:\n{}", actual);
+		assertEquals(expect,actual);
+	}
 }

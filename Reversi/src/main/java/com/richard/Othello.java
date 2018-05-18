@@ -594,4 +594,23 @@ public class Othello
     		}
     	}
     }
+    
+    /**
+     * The entry to play games in
+     * batch mode
+     * @param inputSteps
+     */
+    public void playGame(String inputSteps) {
+    	try {
+	    	Arrays.asList(inputSteps.split(",")).forEach(
+	    		step -> {
+	    			String step2 = step.trim().toLowerCase();
+	    			this.playGameSingleRound(step2);
+	    		}
+	    	);
+    	} catch (RuntimeException re) {
+    		logger.error("issue found during running through the steps...", re);
+    		throw re;
+    	}
+    }
 }
