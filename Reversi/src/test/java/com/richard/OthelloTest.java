@@ -531,26 +531,9 @@ public class OthelloTest {
 		assertFalse(obj.canValidMoveBeFound(obj.getdark(), chessboard2));
 		assertFalse(obj.canValidMoveBeFound(obj.getlight(), chessboard2));
 	}
-	
-	@Deprecated
-	public void testIsEndGameDetected() {
-		char[] chessboard = new char[64];
-		for (int i = 0; i < 64; i++) {
-			chessboard[i] = obj.getdark();
-		}
-		
-		boolean[] result1 = obj.isEndGameDetected(chessboard, 0, 1);
-		
-		assertTrue(result1[0]);
-		assertTrue(result1[1]);
 
-		boolean[] result2 = obj.isEndGameDetected(chessboard, 0, 3);
-		
-		assertFalse(result2[0]);
-		assertTrue(result2[1]);
-	}
 	
-	@Deprecated
+	@Test(expected=InvalidMoveException.class)
 	public void testPlayGameSingleStepInvalidMove1() {
 		Othello game = new Othello();
 		try {
@@ -756,5 +739,25 @@ public class OthelloTest {
 		char[] chessboard = obj.initchessboard();
 		int[] r = obj.getDiskCounts(chessboard);
 		assertTrue(2==r[0] && 2==r[1]);
+	}
+	
+	@Test
+	public void testIsEndGame() {
+		char[] chessboard = new char[64];
+		for (int i = 0; i < 64; i++) {
+			chessboard[i] = obj.getdark();
+		}
+		assertTrue(obj.isEndGameDetected(chessboard, 0));
+		assertTrue(obj.isEndGameDetected(chessboard, 1));
+		
+		char[] chessboard2 = obj.initchessboard();
+		Arrays.asList(4,12,13,16,17,18,19,20,21,22,26,27,28,29,34,35,36)
+			.forEach(i->chessboard2[i] = obj.getlight());
+		Arrays.asList(23,31,39)
+			.forEach(i->chessboard2[i] = obj.getdark());
+		if (logger.isDebugEnabled())
+			logger.debug("chessboard2:\n{}", obj.getchessboardStr(chessboard2));
+		
+		assertTrue(obj.isEndGameDetected(chessboard2, 15));
 	}
 }

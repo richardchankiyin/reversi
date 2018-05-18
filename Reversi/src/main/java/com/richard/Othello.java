@@ -313,12 +313,9 @@ public class Othello
     				iscontinue = false;
     				isvalid = true;
     			}
-    			else if (chessboard[nextpos] == diskType && result.isEmpty()) {
+    			else {
     				iscontinue = false;
     				isvalid = false;
-    			} else {
-    				// meeting a blank
-    				pos = nextpos;
     			}
     			
     		}
@@ -380,7 +377,9 @@ public class Othello
      */
     protected boolean isValidMove(char diskType, char[] chessboard, int startpos) {
     	try {
-    		return getListOfCoordinatesCanTurnDisk(diskType, chessboard, startpos).isEmpty();
+    		List<Integer> r = getListOfCoordinatesCanTurnDisk(diskType, chessboard, startpos);
+    		logger.debug("isValidMove diskType: {} startpos: {} result: {}", diskType, startpos, r);
+    		return !r.isEmpty();
     	}
     	catch (IllegalArgumentException e) {
     		logger.debug("invalid move", e);
@@ -461,42 +460,18 @@ public class Othello
     protected boolean canValidMoveBeFound(char diskType, char[] chessboard) {
     	boolean isFound = false;
     	boolean isContinue = true;
+    	int pos = -1;
     	for (int i = 0; i < 64 && isContinue; i++) {    		
     		if (isValidMove(diskType, chessboard, i)) {
     			isContinue = false;
     			isFound = true;
+    			pos = i;
     		}
     	}
     	
-    	return isFound;
-    }
-    
-    /**
-     * This method will base on last invalid detect position
-     * and current round position diff (1) to determine end game
-     * happened. There are boolean 2 size array and boolean[0]
-     * represents isEndGameDetected and boolean[1] can indicate
-     * whether current round is an invalid.
-     * 
-     * Logically, if boolean[0] is true, boolean[1] must be true
-     * if boolean[0] is false, boolean[1] can be true or false
-     * 
-     * if boolean[1] is true, caller should update the last
-     * invalid detect position to maintain the game end
-     * checking
-     * 
-     * @param chessboard
-     * @param lastRoundDetectedInvalid
-     * @param currentRound
-     * @return
-     */
-    @Deprecated
-    protected boolean[] isEndGameDetected(char[] chessboard, int lastRoundDetectedInvalid, int currentRound) {
-    	char diskType = getPlayerBasedOnRoundsPlayed(currentRound);
-    	boolean iscurrentinvalid = !canValidMoveBeFound(diskType, chessboard);
+    	logger.debug("canValidMoveBeFound disk: {} valid pos: {}", diskType, pos);
     	
-    	return new boolean[] {currentRound - lastRoundDetectedInvalid == 1
-    			, iscurrentinvalid};
+    	return isFound;
     }
     
     /**
@@ -543,8 +518,7 @@ public class Othello
     private int noofrounds = 0;
     private long sleeptimeperround = 1000;
     private List<String> stepsGoneThrough = new ArrayList<String>();
-    @Deprecated
-    private int lastRoundDetectedInvalid = -2;
+
     private boolean isEndGame = false;
     
     public Othello(long sleeptimeperround) {
@@ -558,9 +532,7 @@ public class Othello
     public boolean isEndGame() { return isEndGame; }
     
     public int getNoOfRoundsPlayed() { return noofrounds; }
-    
-    @Deprecated
-    public int getLastRoundDetectedInvalid() { return lastRoundDetectedInvalid; }
+
     
     public int[] getDiskCounts() {
     	return this.getDiskCounts(gamechessboard);
@@ -590,13 +562,15 @@ public class Othello
     }
     
     private void preplayGame() {
+    	
+    }
+    
+    private void postplayGame() {
     	boolean isCurrentEndGame = isEndGameDetected(gamechessboard, noofrounds);
     	
     	if (isCurrentEndGame)
     		isEndGame = isCurrentEndGame;
-    }
-    
-    private void postplayGame() {
+    	
     	try {
     		Thread.sleep(sleeptimeperround);
     	}
@@ -611,7 +585,6 @@ public class Othello
     	}
     	
     	if (this.isPassBackRequest(step)) {
-    		lastRoundDetectedInvalid = noofrounds;
     		// add 1 more round
     		noofrounds++;
     		 // as pass pack is a sign of no valid move
