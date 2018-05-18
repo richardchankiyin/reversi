@@ -629,4 +629,71 @@ public class OthelloTest {
 		logger.debug("testPlayGameSingleStepValid2 actual:\n{}", actual);
 		assertEquals(expect,actual);
 	}
+	
+	@Test
+	public void testPlayGameSingleStepValid3() {
+		Othello game = new Othello();
+		game.playGameSingleRound("4c");
+		assertTrue(1==game.getNoOfRoundsPlayed());
+		assertTrue(game.getLastRoundDetectedInvalid() < 0);
+		assertTrue(1==game.getStepsGoneThrough().size());
+		game.playGameSingleRound("5c");
+		assertTrue(2==game.getNoOfRoundsPlayed());
+		assertTrue(game.getLastRoundDetectedInvalid() < 0);
+		List<String> steps = game.getStepsGoneThrough();
+		assertTrue(2==steps.size());
+		assertEquals("4c", steps.get(0));
+		assertEquals("5c", steps.get(1));
+		
+		StringBuilder str = new StringBuilder();
+		str.append("1 --------").append('\n');
+		str.append("2 --------").append('\n');
+		str.append("3 --------").append('\n');
+		str.append("4 --XXX---").append('\n');
+		str.append("5 --OOO---").append('\n');
+		str.append("6 --------").append('\n');
+		str.append("7 --------").append('\n');
+		str.append("8 --------").append('\n');
+		str.append("  abcdefgh").append('\n');
+		
+		String expect = str.toString();
+		String actual = game.getChessBoardStr();
+		
+		logger.debug("testPlayGameSingleStepValid3 actual:\n{}", actual);
+		assertEquals(expect,actual);
+	}
+	
+	@Test
+	public void testPlayGameSingleStepValid4() {
+		// with passback
+		Othello game = new Othello();
+		game.playGameSingleRound("4c");
+		assertTrue(1==game.getNoOfRoundsPlayed());
+		assertTrue(game.getLastRoundDetectedInvalid() < 0);
+		assertTrue(1==game.getStepsGoneThrough().size());
+		game.playGameSingleRound("");
+		assertTrue(2==game.getNoOfRoundsPlayed());
+		assertTrue(game.getLastRoundDetectedInvalid() < 0);
+		List<String> steps = game.getStepsGoneThrough();
+		assertTrue(2==steps.size());
+		assertEquals("4c", steps.get(0));
+		assertEquals("", steps.get(1));
+		
+		StringBuilder str = new StringBuilder();
+		str.append("1 --------").append('\n');
+		str.append("2 --------").append('\n');
+		str.append("3 --------").append('\n');
+		str.append("4 --XXX---").append('\n');
+		str.append("5 ---XO---").append('\n');
+		str.append("6 --------").append('\n');
+		str.append("7 --------").append('\n');
+		str.append("8 --------").append('\n');
+		str.append("  abcdefgh").append('\n');
+		
+		String expect = str.toString();
+		String actual = game.getChessBoardStr();
+		
+		logger.debug("testPlayGameSingleStepValid4 actual:\n{}", actual);
+		assertEquals(expect,actual);
+	}
 }
