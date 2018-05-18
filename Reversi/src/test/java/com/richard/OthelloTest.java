@@ -403,5 +403,20 @@ public class OthelloTest {
 		List<Integer> result2 = obj.getListOfCoordinatesCanTurnDisk(obj.getdark(), chessboard, obj.getRightOperator(), 0);
 		logger.debug("result2:{}", result2);
 		assertEquals(0, result2.size());
+		
+		// hitting edge
+		List<Integer> result3 = obj.getListOfCoordinatesCanTurnDisk(obj.getdark(), chessboard, obj.getLeftOperator(), 0);
+		logger.debug("result3:{}", result3);
+		assertEquals(0, result3.size());
+		
+		// manually update chessboard through altering char values (not for actual game playing disk turning
+		chessboard[0] = obj.getlight();
+		if (logger.isDebugEnabled())
+			logger.debug("after manually altering chessboard:\n{}", obj.getchessboardStr(chessboard));
+		
+		// caught 1 light but eventually hit edge
+		List<Integer> result4 = obj.getListOfCoordinatesCanTurnDisk(obj.getdark(), chessboard, obj.getLeftOperator(), 1);
+		logger.debug("result4:{}", result4);
+		assertEquals(0, result4.size());
 	}
 }
