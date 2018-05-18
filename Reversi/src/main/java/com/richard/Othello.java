@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
  */
 public class Othello 
 {
-	private Logger logger = LoggerFactory.getLogger(Othello.class);
+	private static Logger logger = LoggerFactory.getLogger(Othello.class);
 	private static final Set<Character> ROW_INDEX = new HashSet<Character>();
 	private static final Set<Character> COL_INDEX = new HashSet<Character>();
 	static {
@@ -495,6 +495,27 @@ public class Othello
     			, iscurrentinvalid};
     }
     
+    /**
+     * Get disk counts on the chessboard
+     * Two values will be returned in an
+     * int[]. int[0] represents dark count.
+     * int[1] represents light count.
+     * 
+     * @param chessboard
+     * @return
+     */
+    protected int[] getDiskCounts(char[] chessboard) {
+    	int darkc = 0;
+    	int lightc = 0;
+    	for (int i = 0; i < 64; i++) {
+    		if (chessboard[i] == getdark()) darkc++;
+    		if (chessboard[i] == getlight()) lightc++;
+    	}
+    	
+    	return new int[] {darkc, lightc};
+    	
+    }
+    
     /********** instance variables and public/non-mutable private methods ***************/
     private char[] gamechessboard = null;
     private int noofrounds = 0;
@@ -518,6 +539,9 @@ public class Othello
     public int getLastRoundDetectedInvalid() { return lastRoundDetectedInvalid; }
     
     public List<String> getStepsGoneThrough() { 
+    	// return a immutable list rather
+    	// than a list reference to 
+    	// external caller
     	return Arrays.asList(
     			stepsGoneThrough.toArray(
     					new String[stepsGoneThrough.size()])); 
@@ -527,6 +551,10 @@ public class Othello
     	return this.getchessboardStr(gamechessboard);
     }
     
+    /**
+     * There is a playing single round game
+     * @param step
+     */
     public void playGameSingleRound(String step) {
     	preplayGame();
     	playGameCore(step);

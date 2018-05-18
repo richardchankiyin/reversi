@@ -13,7 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class OthelloTest {
-	private Logger logger = LoggerFactory.getLogger(OthelloTest.class);
+	private static Logger logger = LoggerFactory.getLogger(OthelloTest.class);
 
 	private Othello obj = null;
 
@@ -754,5 +754,12 @@ public class OthelloTest {
 			assertEquals(steps, game.getStepsGoneThrough());
 			throw ie;
 		}
+	}
+	
+	@Test
+	public void testGetDiskCounts() {
+		char[] chessboard = obj.initchessboard();
+		int[] r = obj.getDiskCounts(chessboard);
+		assertTrue(2==r[0] && 2==r[1]);
 	}
 }
