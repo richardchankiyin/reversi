@@ -26,7 +26,14 @@ public class OthelloBatchGame {
 			output(e.getMessage());
 		}
 		
+		if (logger.isInfoEnabled()) {
+			logger.info("chessboard:\n{}", game.getChessBoardStr());
+			logger.info("steps:{}",game.getStepsGoneThrough());
+		}
+		
 		output(game.getChessBoardStr());
+		//output(game.getStepsGoneThrough().toString());
+		//output(String.valueOf(game.getLastRoundDetectedInvalid()));
 		
 		if (game.isEndGame()) {
 			int[] counts = game.getDiskCounts();
@@ -46,11 +53,6 @@ public class OthelloBatchGame {
 			output(str.toString());
 		}
 		
-		
-		if (logger.isDebugEnabled()) {
-			logger.debug("chessboard:\n{}", game.getChessBoardStr());
-			logger.debug("steps:{}",game.getStepsGoneThrough());
-		}
 	}
 
 	private static void output(String msg) {

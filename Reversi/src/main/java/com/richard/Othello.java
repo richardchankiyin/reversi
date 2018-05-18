@@ -490,12 +490,31 @@ public class Othello
      * @param currentRound
      * @return
      */
+    @Deprecated
     protected boolean[] isEndGameDetected(char[] chessboard, int lastRoundDetectedInvalid, int currentRound) {
     	char diskType = getPlayerBasedOnRoundsPlayed(currentRound);
     	boolean iscurrentinvalid = !canValidMoveBeFound(diskType, chessboard);
     	
     	return new boolean[] {currentRound - lastRoundDetectedInvalid == 1
     			, iscurrentinvalid};
+    }
+    
+    /**
+     * Checking whether the current chessboard status
+     * is the game end status. Based on the no of rounds
+     * played, we can determine the diskType (dark/light)
+     * , then we can see any valid moves found for that 
+     * disk type. If there is no, we will further check
+     * the counterparty disk has any valid move. If both
+     * cannot move, we will claim this is an end game
+     * 
+     * @param chessboard
+     * @param currentRound
+     * @return
+     */
+    protected boolean isEndGameDetected(char[] chessboard, int currentRound) {
+    	char diskType = getPlayerBasedOnRoundsPlayed(currentRound);
+    	return !canValidMoveBeFound(diskType, chessboard) && !canValidMoveBeFound(getCounterpartyDisk(diskType), chessboard);
     }
     
     /**
@@ -524,6 +543,7 @@ public class Othello
     private int noofrounds = 0;
     private long sleeptimeperround = 1000;
     private List<String> stepsGoneThrough = new ArrayList<String>();
+    @Deprecated
     private int lastRoundDetectedInvalid = -2;
     private boolean isEndGame = false;
     
@@ -539,6 +559,7 @@ public class Othello
     
     public int getNoOfRoundsPlayed() { return noofrounds; }
     
+    @Deprecated
     public int getLastRoundDetectedInvalid() { return lastRoundDetectedInvalid; }
     
     public int[] getDiskCounts() {
@@ -569,10 +590,10 @@ public class Othello
     }
     
     private void preplayGame() {
-    	boolean[] status = isEndGameDetected(gamechessboard, lastRoundDetectedInvalid, noofrounds);
-    	isEndGame = status[0];
-    	if (status[1])
-    		lastRoundDetectedInvalid = noofrounds;
+    	boolean isCurrentEndGame = isEndGameDetected(gamechessboard, noofrounds);
+    	
+    	if (isCurrentEndGame)
+    		isEndGame = isCurrentEndGame;
     }
     
     private void postplayGame() {
@@ -590,10 +611,10 @@ public class Othello
     	}
     	
     	if (this.isPassBackRequest(step)) {
-    		
+    		lastRoundDetectedInvalid = noofrounds;
     		// add 1 more round
     		noofrounds++;
-    		lastRoundDetectedInvalid = noofrounds; // as pass pack is a sign of no valid move
+    		 // as pass pack is a sign of no valid move
     		stepsGoneThrough.add(step);
     		
     	} else {
