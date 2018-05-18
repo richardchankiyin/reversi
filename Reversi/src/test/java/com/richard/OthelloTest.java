@@ -539,7 +539,14 @@ public class OthelloTest {
 			chessboard[i] = obj.getdark();
 		}
 		
-		assertTrue(obj.isEndGameDetected(chessboard, 0, 1));
-		assertFalse(obj.isEndGameDetected(chessboard, 0, 3));
+		boolean[] result1 = obj.isEndGameDetected(chessboard, 0, 1);
+		
+		assertTrue(result1[0]);
+		assertTrue(result1[1]);
+
+		boolean[] result2 = obj.isEndGameDetected(chessboard, 0, 3);
+		
+		assertFalse(result2[0]);
+		assertTrue(result2[1]);
 	}
 }
