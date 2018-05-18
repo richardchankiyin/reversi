@@ -161,16 +161,11 @@ public class Othello
     	return op;
     }
     
-    protected int convertCharsCoordinates2Int(char c1, char c2) {
-    	int row = c1 - 48 - 1; //48 is the ascii value of '1', '1' -> 1, zero base -> 0
-    	int col = c2 - 97; // 97 is the ascii value of 'a'
-    	logger.debug("c1: {} c2: {} row: {} col:{}", c1, c2, row, col);
-    	if (row >= 0 && row <= 7 && col >= 0 && col <= 7) {
-    		return row * 8 + col;
-    	}
-    	else {
-    		throw new IllegalArgumentException("out of the bound " + row + " " + col);
-    	}
+    protected boolean isPassBackRequest(String input) {
+    	// for blank string, treat it as passback
+    	// then convertStrCoordinates2Int won't
+    	// be callsed
+    	return StringUtils.isBlank(input);
     }
     
     /**
@@ -203,6 +198,17 @@ public class Othello
     	
     }
     
+    protected int convertCharsCoordinates2Int(char c1, char c2) {
+    	int row = c1 - 48 - 1; //48 is the ascii value of '1', '1' -> 1, zero base -> 0
+    	int col = c2 - 97; // 97 is the ascii value of 'a'
+    	logger.debug("c1: {} c2: {} row: {} col:{}", c1, c2, row, col);
+    	if (row >= 0 && row <= 7 && col >= 0 && col <= 7) {
+    		return row * 8 + col;
+    	}
+    	else {
+    		throw new IllegalArgumentException("out of the bound " + row + " " + col);
+    	}
+    }
     
     protected List<Integer> getListOfCoordinatesCanTurnDisk(char diskType, char[] chessboard, UnaryOperator<Integer> checkdirectionops, int startingpos) {
     	if (!isValidDisk(diskType))
@@ -265,6 +271,16 @@ public class Othello
     	return result;
     }
     
+    protected boolean isValidMove(char diskType, char[] chessboard, int startpos) {
+    	try {
+    		return getListOfCoordinatesCanTurnDisk(diskType, chessboard, startpos).isEmpty();
+    	}
+    	catch (IllegalArgumentException e) {
+    		logger.debug("invalid move", e);
+    		return false;
+    	}
+    }
+    
     
     protected char[] updateChessBoard(char[] chessboard, char diskType, List<Integer> updatepos) {
     	updatepos.forEach(i->{chessboard[i] = diskType; });
@@ -300,10 +316,35 @@ public class Othello
     	return noOfRoundsPlayed % 2 == 0 ? getdark() : getlight();
     }
     
+    protected boolean canValidMoveBeFound(char diskType, char[] chessboard) {
+    	boolean isFound = false;
+    	boolean isContinue = true;
+    	for (int i = 0; i < 64 && isContinue; i++) {    		
+    		if (isValidMove(diskType, chessboard, i)) {
+    			isContinue = false;
+    			isFound = true;
+    		}
+    	}
+    	
+    	return isFound;
+    }
+    
+    protected boolean isEndGameDetected(char[] chessboard, int lastRoundDetectedInvalid, int currentRound) {
+    	if (currentRound - lastRoundDetectedInvalid != 1) {
+    		return false;
+    	} else {
+    		char diskType = getPlayerBasedOnRoundsPlayed(currentRound);
+    		return !canValidMoveBeFound(diskType, chessboard);
+    	}
+    }
+    
     /********** instance variables and public methods ***************/
     private char[] gamechessboard = null;
     private int noofrounds = 0;
     private long sleeptimeperround = 1000;
+    private List<String> stepsGoneThrough = new ArrayList<String>();
+    private int lastRoundDetectedInvalid = -1;
+    
     public Othello(long sleeptimeperround) {
     	this.gamechessboard = this.initchessboard();
     	this.sleeptimeperround = sleeptimeperround;
@@ -311,6 +352,8 @@ public class Othello
     public Othello() {
     	this(0);
     }
+    
+    
     
     public void playGame(String step) {
     	

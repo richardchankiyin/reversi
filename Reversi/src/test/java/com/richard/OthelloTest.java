@@ -284,6 +284,17 @@ public class OthelloTest {
 	}
 	
 	@Test
+	public void testIsPassBack() {
+		assertTrue(obj.isPassBackRequest(""));
+		assertTrue(obj.isPassBackRequest(" "));
+		assertTrue(obj.isPassBackRequest(null));
+		assertFalse(obj.isPassBackRequest("2"));
+		assertFalse(obj.isPassBackRequest("2b"));
+		assertFalse(obj.isPassBackRequest("b2"));
+		assertFalse(obj.isPassBackRequest("nnnnn"));
+	}
+	
+	@Test
 	public void testConvertStrCoordinates2IntInvalid1() {
 		//blank string
 		int exceptioncaught = 0;
@@ -502,5 +513,33 @@ public class OthelloTest {
 		assertEquals(obj.getlight(), obj.getPlayerBasedOnRoundsPlayed(1));
 		assertEquals(obj.getdark(), obj.getPlayerBasedOnRoundsPlayed(2));
 		assertEquals(obj.getlight(), obj.getPlayerBasedOnRoundsPlayed(3));
+	}
+	
+	@Test
+	public void testCanValidMoveBeFound() {
+		char[] chessboard = obj.initchessboard();
+		
+		// init chess
+		assertTrue(obj.canValidMoveBeFound(obj.getdark(), chessboard));
+		assertTrue(obj.canValidMoveBeFound(obj.getlight(), chessboard));
+		
+		char[] chessboard2 = new char[64];
+		for (int i = 0; i < 64; i++) {
+			chessboard2[i] = obj.getdark();
+		}
+		
+		assertFalse(obj.canValidMoveBeFound(obj.getdark(), chessboard2));
+		assertFalse(obj.canValidMoveBeFound(obj.getlight(), chessboard2));
+	}
+	
+	@Test
+	public void testIsEndGameDetected() {
+		char[] chessboard = new char[64];
+		for (int i = 0; i < 64; i++) {
+			chessboard[i] = obj.getdark();
+		}
+		
+		assertTrue(obj.isEndGameDetected(chessboard, 0, 1));
+		assertFalse(obj.isEndGameDetected(chessboard, 0, 3));
 	}
 }
