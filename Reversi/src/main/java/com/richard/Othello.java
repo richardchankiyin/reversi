@@ -42,9 +42,9 @@ public class Othello
 		COL_INDEX.add('h');
 	}
 	
-	protected final char getblank() { return '-'; }
-	protected final char getdark() { return 'X'; }
-	protected final char getlight() { return 'O'; }
+	public final char getblank() { return '-'; }
+	public final char getdark() { return 'X'; }
+	public final char getlight() { return 'O'; }
 	protected final boolean isValidDisk(char input) {
 		return (input == getdark() || input == getlight());
 	}
@@ -313,9 +313,12 @@ public class Othello
     				iscontinue = false;
     				isvalid = true;
     			}
-    			else {
+    			else if (chessboard[nextpos] == diskType && result.isEmpty()) {
     				iscontinue = false;
     				isvalid = false;
+    			} else {
+    				// meeting a blank
+    				pos = nextpos;
     			}
     			
     		}
@@ -538,6 +541,10 @@ public class Othello
     
     public int getLastRoundDetectedInvalid() { return lastRoundDetectedInvalid; }
     
+    public int[] getDiskCounts() {
+    	return this.getDiskCounts(gamechessboard);
+    }
+    
     public List<String> getStepsGoneThrough() { 
     	// return a immutable list rather
     	// than a list reference to 
@@ -583,8 +590,10 @@ public class Othello
     	}
     	
     	if (this.isPassBackRequest(step)) {
+    		
     		// add 1 more round
     		noofrounds++;
+    		lastRoundDetectedInvalid = noofrounds; // as pass pack is a sign of no valid move
     		stepsGoneThrough.add(step);
     		
     	} else {

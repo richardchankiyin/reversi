@@ -673,7 +673,7 @@ public class OthelloTest {
 		assertTrue(1==game.getStepsGoneThrough().size());
 		game.playGameSingleRound("");
 		assertTrue(2==game.getNoOfRoundsPlayed());
-		assertTrue(game.getLastRoundDetectedInvalid() < 0);
+		assertTrue(2==game.getLastRoundDetectedInvalid());
 		List<String> steps = game.getStepsGoneThrough();
 		assertTrue(2==steps.size());
 		assertEquals("4c", steps.get(0));

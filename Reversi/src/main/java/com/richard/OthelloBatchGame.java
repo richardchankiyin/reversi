@@ -28,6 +28,23 @@ public class OthelloBatchGame {
 		
 		output(game.getChessBoardStr());
 		
+		if (game.isEndGame()) {
+			int[] counts = game.getDiskCounts();
+			int darkc = counts[0];
+			int lightc = counts[1];
+			
+			StringBuilder str = new StringBuilder();
+			str.append("No further moves available\n");
+			if (darkc == lightc) {
+				str.append(String.format("Draw (%s vs %s)\n", darkc, lightc));
+			} else {
+				char winner = darkc > lightc ? game.getdark() : game.getlight();
+				str.append(String.format("Player '%s' wins (%s vs %s)\n"
+						, winner, darkc, lightc));
+			}
+			
+			output(str.toString());
+		}
 		
 		
 		if (logger.isDebugEnabled()) {
