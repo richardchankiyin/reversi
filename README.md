@@ -9,6 +9,9 @@ maven<br/>
 Detail
 =======
 This is an application to play with Othello/Reversi.<br/><br/>
+In order to build, please type:<br/>
+cd Reversi<br/>
+mvn clean install<br/><br/>
 In order to run batch mode, please type:<br/>
 cd Reversi<br/>
 ./run_batch.sh "[your arg here]"<br/><br/>
