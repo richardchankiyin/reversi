@@ -723,4 +723,36 @@ public class OthelloTest {
 		logger.debug("testPlayGame actual:\n{}", actual);
 		assertEquals(expect,actual);
 	}
+	
+	@Test(expected=InvalidMoveException.class)
+	public void testPlayGameHitInvalid() {
+		Othello game = new Othello();
+		// 1a is invalid move
+		String inputSteps = "f5, 6f, f7, 4f, f3, 3e, d3, c5, 1a, 5g";
+		try {
+			game.playGame(inputSteps);
+		}
+		catch (InvalidMoveException ie) {
+			assertTrue(8==game.getNoOfRoundsPlayed());
+			List<String> steps = Arrays.asList(new String[]{"f5", "6f", "f7", "4f", "f3", "3e", "d3", "c5"});
+			assertEquals(steps, game.getStepsGoneThrough());
+			throw ie;
+		}
+	}
+	
+	@Test(expected=InvalidMoveException.class)
+	public void testPlayGameHitInvalid2() {
+		Othello game = new Othello();
+		// 1a is invalid move
+		String inputSteps = "f5, 6f, f7, 4f, f3, 3e, d3, c5, 99, 5g";
+		try {
+			game.playGame(inputSteps);
+		}
+		catch (InvalidMoveException ie) {
+			assertTrue(8==game.getNoOfRoundsPlayed());
+			List<String> steps = Arrays.asList(new String[]{"f5", "6f", "f7", "4f", "f3", "3e", "d3", "c5"});
+			assertEquals(steps, game.getStepsGoneThrough());
+			throw ie;
+		}
+	}
 }
