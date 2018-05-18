@@ -226,11 +226,11 @@ public class Othello
      * @return
      */
     protected boolean isPassBackRequest(String input) {
-    	// for blank string, treat it as passback
-    	// then convertStrCoordinates2Int won't
-    	// be callsed
-    	return StringUtils.isBlank(input);
+    	if (StringUtils.isBlank(input)) return false;
+    	return getPassBackStr().equals(input.toLowerCase().trim());
     }
+    
+    protected String getPassBackStr() { return "pb"; }
     
     /**
      * convert String coordinates to a int
@@ -532,6 +532,10 @@ public class Othello
     public boolean isEndGame() { return isEndGame; }
     
     public int getNoOfRoundsPlayed() { return noofrounds; }
+    
+    public char getPlayer() {
+    	return getPlayerBasedOnRoundsPlayed(getNoOfRoundsPlayed());
+    }
 
     
     public int[] getDiskCounts() {
@@ -570,6 +574,8 @@ public class Othello
     	
     	if (isCurrentEndGame)
     		isEndGame = isCurrentEndGame;
+    	
+    	if (isEndGame) throw new GameIsOverException();
     	
     	try {
     		Thread.sleep(sleeptimeperround);

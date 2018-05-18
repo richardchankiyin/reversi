@@ -285,13 +285,16 @@ public class OthelloTest {
 	
 	@Test
 	public void testIsPassBack() {
-		assertTrue(obj.isPassBackRequest(""));
-		assertTrue(obj.isPassBackRequest(" "));
-		assertTrue(obj.isPassBackRequest(null));
+		assertFalse(obj.isPassBackRequest(""));
+		assertFalse(obj.isPassBackRequest(" "));
+		assertFalse(obj.isPassBackRequest(null));
 		assertFalse(obj.isPassBackRequest("2"));
 		assertFalse(obj.isPassBackRequest("2b"));
 		assertFalse(obj.isPassBackRequest("b2"));
 		assertFalse(obj.isPassBackRequest("nnnnn"));
+		
+		assertTrue(obj.isPassBackRequest("pb"));
+		assertTrue(obj.isPassBackRequest("PB"));
 	}
 	
 	@Test
@@ -649,12 +652,12 @@ public class OthelloTest {
 		game.playGameSingleRound("4c");
 		assertTrue(1==game.getNoOfRoundsPlayed());
 		assertTrue(1==game.getStepsGoneThrough().size());
-		game.playGameSingleRound("");
+		game.playGameSingleRound("pb");
 		assertTrue(2==game.getNoOfRoundsPlayed());
 		List<String> steps = game.getStepsGoneThrough();
 		assertTrue(2==steps.size());
 		assertEquals("4c", steps.get(0));
-		assertEquals("", steps.get(1));
+		assertEquals("pb", steps.get(1));
 		
 		StringBuilder str = new StringBuilder();
 		str.append("1 --------").append('\n');
