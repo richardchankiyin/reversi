@@ -41,11 +41,6 @@ public class Othello
 		COL_INDEX.add('h');
 	}
 	
-	public static void main( String[] args )
-    {
-        System.out.println( "Hello World!" );
-    }
-	
 	protected final char getblank() { return '-'; }
 	protected final char getdark() { return 'X'; }
 	protected final char getlight() { return 'O'; }
@@ -178,7 +173,14 @@ public class Othello
     	}
     }
     
-    
+    /**
+     * convert String coordinates to a int
+     * zero based position for char[] to
+     * retrieve its value
+     * 
+     * @param input
+     * @return
+     */
     protected int convertStrCoordinates2Int(String input) {
     	if (StringUtils.isBlank(input)) {
     		throw new IllegalArgumentException("blank string not accepted");
@@ -292,4 +294,25 @@ public class Othello
     	return str.toString();
     }
     
+    protected char getPlayerBasedOnRoundsPlayed(int noOfRoundsPlayed) {
+    	if (noOfRoundsPlayed < 0)
+    		throw new IllegalArgumentException("not accept negative");
+    	return noOfRoundsPlayed % 2 == 0 ? getdark() : getlight();
+    }
+    
+    /********** instance variables and public methods ***************/
+    private char[] gamechessboard = null;
+    private int noofrounds = 0;
+    private long sleeptimeperround = 1000;
+    public Othello(long sleeptimeperround) {
+    	this.gamechessboard = this.initchessboard();
+    	this.sleeptimeperround = sleeptimeperround;
+    }
+    public Othello() {
+    	this(0);
+    }
+    
+    public void playGame(String step) {
+    	
+    }
 }

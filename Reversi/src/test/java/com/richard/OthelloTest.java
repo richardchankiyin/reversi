@@ -487,4 +487,20 @@ public class OthelloTest {
 		logger.debug("actual:\n{}", actual);
 		assertEquals(expect,actual);
 	}
+	
+	@Test
+	public void testGetPlayerBasedOnRoundsPlayed() {
+		int exceptioncaught = 0;
+		try {
+			obj.getPlayerBasedOnRoundsPlayed(-1);
+		}
+		catch (Exception e) {
+			exceptioncaught++;
+		}
+		assertTrue(1 == exceptioncaught);
+		assertEquals(obj.getdark(), obj.getPlayerBasedOnRoundsPlayed(0));
+		assertEquals(obj.getlight(), obj.getPlayerBasedOnRoundsPlayed(1));
+		assertEquals(obj.getdark(), obj.getPlayerBasedOnRoundsPlayed(2));
+		assertEquals(obj.getlight(), obj.getPlayerBasedOnRoundsPlayed(3));
+	}
 }
