@@ -42,11 +42,11 @@ public class Othello
 		COL_INDEX.add('h');
 	}
 	
-	public final char getblank() { return '-'; }
-	public final char getdark() { return 'X'; }
-	public final char getlight() { return 'O'; }
+	public final char getBlank() { return '-'; }
+	public final char getDark() { return 'X'; }
+	public final char getLight() { return 'O'; }
 	protected final boolean isValidDisk(char input) {
-		return (input == getdark() || input == getlight());
+		return (input == getDark() || input == getLight());
 	}
 	/**
 	 * This method will return the counterparty disk
@@ -60,7 +60,7 @@ public class Othello
 		if (!isValidDisk(input)) {
 			throw new IllegalArgumentException("input disk invalid: " + input);
 		}
-		return input == getdark() ? getlight() : getdark();
+		return input == getDark() ? getLight() : getDark();
 	}
 	
 	protected final Set<Character> getrowindices() { return ROW_INDEX; }
@@ -76,16 +76,16 @@ public class Othello
      * row 2 col a value is array[8] (9th)
      * @return
      */
-    protected char[] initchessboard() {
+    protected char[] initChessBoard() {
     	char[] r = new char[64];
     	Map<Integer,Character> map = new HashMap<Integer,Character>();
-    	map.put(27, getlight());
-    	map.put(28, getdark());
-    	map.put(35, getdark());
-    	map.put(36, getlight());
+    	map.put(27, getLight());
+    	map.put(28, getDark());
+    	map.put(35, getDark());
+    	map.put(36, getLight());
     	
     	for (int i = 0; i < 64; i++) {
-    		r[i] = map.getOrDefault(i, getblank());
+    		r[i] = map.getOrDefault(i, getBlank());
     	}
     	
     	return r;
@@ -352,7 +352,7 @@ public class Othello
     	}
     	
     	// checking target position is blank or not
-    	if (chessboard[startpos] != getblank()) {
+    	if (chessboard[startpos] != getBlank()) {
     		throw new IllegalArgumentException("this position is not blank!");
     	}
     	
@@ -407,7 +407,7 @@ public class Othello
      * @param input
      * @return
      */
-    protected String getchessboardStr(char[] input) {
+    protected String getChessBoardStr(char[] input) {
     	if (input == null) {
     		throw new IllegalArgumentException("chessboard null!");
     	}
@@ -441,7 +441,7 @@ public class Othello
     protected char getPlayerBasedOnRoundsPlayed(int noOfRoundsPlayed) {
     	if (noOfRoundsPlayed < 0)
     		throw new IllegalArgumentException("not accept negative");
-    	return noOfRoundsPlayed % 2 == 0 ? getdark() : getlight();
+    	return noOfRoundsPlayed % 2 == 0 ? getDark() : getLight();
     }
     
     /**
@@ -505,8 +505,8 @@ public class Othello
     	int darkc = 0;
     	int lightc = 0;
     	for (int i = 0; i < 64; i++) {
-    		if (chessboard[i] == getdark()) darkc++;
-    		if (chessboard[i] == getlight()) lightc++;
+    		if (chessboard[i] == getDark()) darkc++;
+    		if (chessboard[i] == getLight()) lightc++;
     	}
     	
     	return new int[] {darkc, lightc};
@@ -522,7 +522,7 @@ public class Othello
     private boolean isEndGame = false;
     
     public Othello(long sleeptimeperround) {
-    	this.gamechessboard = this.initchessboard();
+    	this.gamechessboard = this.initChessBoard();
     	this.sleeptimeperround = sleeptimeperround;
     }
     public Othello() {
@@ -552,7 +552,7 @@ public class Othello
     }
     
     public String getChessBoardStr() {
-    	return this.getchessboardStr(gamechessboard);
+    	return this.getChessBoardStr(gamechessboard);
     }
     
     /**
@@ -560,16 +560,16 @@ public class Othello
      * @param step
      */
     public void playGameSingleRound(String step) {
-    	preplayGame();
+    	prePlayGame();
     	playGameCore(step);
-    	postplayGame();
+    	postPlayGame();
     }
     
-    private void preplayGame() {
+    private void prePlayGame() {
     	
     }
     
-    private void postplayGame() {
+    private void postPlayGame() {
     	boolean isCurrentEndGame = isEndGameDetected(gamechessboard, noofrounds);
     	
     	if (isCurrentEndGame)

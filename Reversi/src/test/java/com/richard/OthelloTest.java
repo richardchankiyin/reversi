@@ -24,25 +24,25 @@ public class OthelloTest {
 
 	@Test
 	public void testIsValidDisk() {
-		assertTrue(obj.isValidDisk(obj.getdark()));
-		assertTrue(obj.isValidDisk(obj.getlight()));
-		assertFalse(obj.isValidDisk(obj.getblank()));
+		assertTrue(obj.isValidDisk(obj.getDark()));
+		assertTrue(obj.isValidDisk(obj.getLight()));
+		assertFalse(obj.isValidDisk(obj.getBlank()));
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testGetCounterpartyDiskInvalid() {
-		obj.getCounterpartyDisk(obj.getblank());
+		obj.getCounterpartyDisk(obj.getBlank());
 	}
 	
 	@Test
 	public void testGetCounterpartyDiskValid() {
-		assertEquals(obj.getlight(),obj.getCounterpartyDisk(obj.getdark()));
-		assertEquals(obj.getdark(),obj.getCounterpartyDisk(obj.getlight()));
+		assertEquals(obj.getLight(),obj.getCounterpartyDisk(obj.getDark()));
+		assertEquals(obj.getDark(),obj.getCounterpartyDisk(obj.getLight()));
 	}
 	
 	@Test
 	public void testInitChessBoard() {
-		char[] r = obj.initchessboard();
+		char[] r = obj.initChessBoard();
 		assertEquals(64, r.length);
 		for (int i = 0; i < 64; i++) {
 			if (i == 27)
@@ -60,12 +60,12 @@ public class OthelloTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testGetchessboardStrNotValid1() {
-		obj.getchessboardStr(null);
+		obj.getChessBoardStr(null);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testGetchessboardStrNotValid2() {
-		obj.getchessboardStr(new char[2]);
+		obj.getChessBoardStr(new char[2]);
 	}
 
 	@Test
@@ -85,7 +85,7 @@ public class OthelloTest {
 		str.append("8 --------").append('\n');
 		str.append("  abcdefgh").append('\n');
 		String expect = str.toString();
-		String actual = obj.getchessboardStr(obj.initchessboard());
+		String actual = obj.getChessBoardStr(obj.initChessBoard());
 		logger.debug("expect init chessboard str:\n{}", expect);
 
 		logger.debug("actual init chessboard str:\n{}", actual);
@@ -386,23 +386,23 @@ public class OthelloTest {
 	
 	@Test
 	public void testGetListOfCoordinatesCanTurnDiskFound() {
-		char[] chessboard = obj.initchessboard();
-		List<Integer> result1 = obj.getListOfCoordinatesCanTurnDisk(obj.getdark(), chessboard, obj.getRightOperator(), 26);
+		char[] chessboard = obj.initChessBoard();
+		List<Integer> result1 = obj.getListOfCoordinatesCanTurnDisk(obj.getDark(), chessboard, obj.getRightOperator(), 26);
 		logger.debug("result1:{}", result1);
 		assertEquals(1, result1.size());
 		assertTrue(27==result1.get(0));
 		
-		List<Integer> result2 = obj.getListOfCoordinatesCanTurnDisk(obj.getdark(), chessboard, obj.getDownOperator(), 19);
+		List<Integer> result2 = obj.getListOfCoordinatesCanTurnDisk(obj.getDark(), chessboard, obj.getDownOperator(), 19);
 		logger.debug("result2:{}", result2);
 		assertEquals(1, result2.size());
 		assertTrue(27==result2.get(0));
 		
-		List<Integer> result3 = obj.getListOfCoordinatesCanTurnDisk(obj.getdark(), chessboard, obj.getUpOperator(), 44);
+		List<Integer> result3 = obj.getListOfCoordinatesCanTurnDisk(obj.getDark(), chessboard, obj.getUpOperator(), 44);
 		logger.debug("result3:{}", result3);
 		assertEquals(1, result3.size());
 		assertTrue(36==result3.get(0));
 		
-		List<Integer> result4 = obj.getListOfCoordinatesCanTurnDisk(obj.getdark(), chessboard, obj.getLeftOperator(), 37);
+		List<Integer> result4 = obj.getListOfCoordinatesCanTurnDisk(obj.getDark(), chessboard, obj.getLeftOperator(), 37);
 		logger.debug("result4:{}", result4);
 		assertEquals(1, result4.size());
 		assertTrue(36==result4.get(0));
@@ -410,56 +410,56 @@ public class OthelloTest {
 	
 	@Test
 	public void testGetListOfCoordinatesCanTurnDiskNotFound() {
-		char[] chessboard = obj.initchessboard();
-		List<Integer> result1 = obj.getListOfCoordinatesCanTurnDisk(obj.getdark(), chessboard, obj.getRightOperator(), 18);
+		char[] chessboard = obj.initChessBoard();
+		List<Integer> result1 = obj.getListOfCoordinatesCanTurnDisk(obj.getDark(), chessboard, obj.getRightOperator(), 18);
 		logger.debug("result1:{}", result1);
 		assertEquals(0, result1.size());
 		
-		List<Integer> result2 = obj.getListOfCoordinatesCanTurnDisk(obj.getdark(), chessboard, obj.getRightOperator(), 0);
+		List<Integer> result2 = obj.getListOfCoordinatesCanTurnDisk(obj.getDark(), chessboard, obj.getRightOperator(), 0);
 		logger.debug("result2:{}", result2);
 		assertEquals(0, result2.size());
 		
 		// hitting edge
-		List<Integer> result3 = obj.getListOfCoordinatesCanTurnDisk(obj.getdark(), chessboard, obj.getLeftOperator(), 0);
+		List<Integer> result3 = obj.getListOfCoordinatesCanTurnDisk(obj.getDark(), chessboard, obj.getLeftOperator(), 0);
 		logger.debug("result3:{}", result3);
 		assertEquals(0, result3.size());
 		
 		// manually update chessboard through altering char values (not for actual game playing disk turning
-		chessboard[0] = obj.getlight();
+		chessboard[0] = obj.getLight();
 		if (logger.isDebugEnabled())
-			logger.debug("after manually altering chessboard:\n{}", obj.getchessboardStr(chessboard));
+			logger.debug("after manually altering chessboard:\n{}", obj.getChessBoardStr(chessboard));
 		
 		// caught 1 light but eventually hit edge
-		List<Integer> result4 = obj.getListOfCoordinatesCanTurnDisk(obj.getdark(), chessboard, obj.getLeftOperator(), 1);
+		List<Integer> result4 = obj.getListOfCoordinatesCanTurnDisk(obj.getDark(), chessboard, obj.getLeftOperator(), 1);
 		logger.debug("result4:{}", result4);
 		assertEquals(0, result4.size());
 	}
 	
 	@Test
 	public void getListOfCoordinatesCanTurnDiskNotValid() {
-		char[] chessboard = obj.initchessboard();
+		char[] chessboard = obj.initChessBoard();
 		int exceptioncaught = 0;
 		try {
-			obj.getListOfCoordinatesCanTurnDisk(obj.getdark(), chessboard, -1);
+			obj.getListOfCoordinatesCanTurnDisk(obj.getDark(), chessboard, -1);
 		}
 		catch (Exception e) {
 			exceptioncaught++;
 		}
 		try {
-			obj.getListOfCoordinatesCanTurnDisk(obj.getdark(), chessboard, 64);
+			obj.getListOfCoordinatesCanTurnDisk(obj.getDark(), chessboard, 64);
 		}
 		catch (Exception e) {
 			exceptioncaught++;
 		}
 		try {
-			obj.getListOfCoordinatesCanTurnDisk(obj.getdark(), chessboard, 27);
+			obj.getListOfCoordinatesCanTurnDisk(obj.getDark(), chessboard, 27);
 		}
 		catch (Exception e) {
 			exceptioncaught++;
 		}
 		
 		try {
-			obj.getListOfCoordinatesCanTurnDisk(obj.getblank(), chessboard, 26);
+			obj.getListOfCoordinatesCanTurnDisk(obj.getBlank(), chessboard, 26);
 		}
 		catch (Exception e) {
 			exceptioncaught++;
@@ -470,22 +470,22 @@ public class OthelloTest {
 	
 	@Test
 	public void getListOfCoordinatesCanTurnDiskValid() {
-		char[] chessboard = obj.initchessboard();
-		List<Integer> result1 = obj.getListOfCoordinatesCanTurnDisk(obj.getdark(), chessboard, 26);
+		char[] chessboard = obj.initChessBoard();
+		List<Integer> result1 = obj.getListOfCoordinatesCanTurnDisk(obj.getDark(), chessboard, 26);
 		logger.debug("getListOfCoordinatesCanTurnDiskValid result1:{}", result1);
 		assertEquals(1, result1.size());
 		assertTrue(27==result1.get(0));
 		
-		List<Integer> result2 = obj.getListOfCoordinatesCanTurnDisk(obj.getdark(), chessboard, 18);
+		List<Integer> result2 = obj.getListOfCoordinatesCanTurnDisk(obj.getDark(), chessboard, 18);
 		logger.debug("getListOfCoordinatesCanTurnDiskValid result2:{}", result2);
 		assertEquals(0, result2.size());
 	}
 	
 	@Test
 	public void testUpdateChessBoard() {
-		char[] chessboard = obj.initchessboard();
+		char[] chessboard = obj.initChessBoard();
 		List<Integer> updatepos = Arrays.asList(0,1,2);
-		char[] newchessboard = obj.updateChessBoard(chessboard, obj.getlight(), updatepos);
+		char[] newchessboard = obj.updateChessBoard(chessboard, obj.getLight(), updatepos);
 		StringBuilder str = new StringBuilder();
 		str.append("1 OOO-----").append('\n');
 		str.append("2 --------").append('\n');
@@ -497,7 +497,7 @@ public class OthelloTest {
 		str.append("8 --------").append('\n');
 		str.append("  abcdefgh").append('\n');
 		String expect = str.toString();
-		String actual = obj.getchessboardStr(newchessboard);
+		String actual = obj.getChessBoardStr(newchessboard);
 		logger.debug("actual:\n{}", actual);
 		assertEquals(expect,actual);
 	}
@@ -512,27 +512,27 @@ public class OthelloTest {
 			exceptioncaught++;
 		}
 		assertTrue(1 == exceptioncaught);
-		assertEquals(obj.getdark(), obj.getPlayerBasedOnRoundsPlayed(0));
-		assertEquals(obj.getlight(), obj.getPlayerBasedOnRoundsPlayed(1));
-		assertEquals(obj.getdark(), obj.getPlayerBasedOnRoundsPlayed(2));
-		assertEquals(obj.getlight(), obj.getPlayerBasedOnRoundsPlayed(3));
+		assertEquals(obj.getDark(), obj.getPlayerBasedOnRoundsPlayed(0));
+		assertEquals(obj.getLight(), obj.getPlayerBasedOnRoundsPlayed(1));
+		assertEquals(obj.getDark(), obj.getPlayerBasedOnRoundsPlayed(2));
+		assertEquals(obj.getLight(), obj.getPlayerBasedOnRoundsPlayed(3));
 	}
 	
 	@Test
 	public void testCanValidMoveBeFound() {
-		char[] chessboard = obj.initchessboard();
+		char[] chessboard = obj.initChessBoard();
 		
 		// init chess
-		assertTrue(obj.canValidMoveBeFound(obj.getdark(), chessboard));
-		assertTrue(obj.canValidMoveBeFound(obj.getlight(), chessboard));
+		assertTrue(obj.canValidMoveBeFound(obj.getDark(), chessboard));
+		assertTrue(obj.canValidMoveBeFound(obj.getLight(), chessboard));
 		
 		char[] chessboard2 = new char[64];
 		for (int i = 0; i < 64; i++) {
-			chessboard2[i] = obj.getdark();
+			chessboard2[i] = obj.getDark();
 		}
 		
-		assertFalse(obj.canValidMoveBeFound(obj.getdark(), chessboard2));
-		assertFalse(obj.canValidMoveBeFound(obj.getlight(), chessboard2));
+		assertFalse(obj.canValidMoveBeFound(obj.getDark(), chessboard2));
+		assertFalse(obj.canValidMoveBeFound(obj.getLight(), chessboard2));
 	}
 
 	
@@ -739,7 +739,7 @@ public class OthelloTest {
 	
 	@Test
 	public void testGetDiskCounts() {
-		char[] chessboard = obj.initchessboard();
+		char[] chessboard = obj.initChessBoard();
 		int[] r = obj.getDiskCounts(chessboard);
 		assertTrue(2==r[0] && 2==r[1]);
 	}
@@ -748,18 +748,18 @@ public class OthelloTest {
 	public void testIsEndGame() {
 		char[] chessboard = new char[64];
 		for (int i = 0; i < 64; i++) {
-			chessboard[i] = obj.getdark();
+			chessboard[i] = obj.getDark();
 		}
 		assertTrue(obj.isEndGameDetected(chessboard, 0));
 		assertTrue(obj.isEndGameDetected(chessboard, 1));
 		
-		char[] chessboard2 = obj.initchessboard();
+		char[] chessboard2 = obj.initChessBoard();
 		Arrays.asList(4,12,13,16,17,18,19,20,21,22,26,27,28,29,34,35,36)
-			.forEach(i->chessboard2[i] = obj.getlight());
+			.forEach(i->chessboard2[i] = obj.getLight());
 		Arrays.asList(23,31,39)
-			.forEach(i->chessboard2[i] = obj.getdark());
+			.forEach(i->chessboard2[i] = obj.getDark());
 		if (logger.isDebugEnabled())
-			logger.debug("chessboard2:\n{}", obj.getchessboardStr(chessboard2));
+			logger.debug("chessboard2:\n{}", obj.getChessBoardStr(chessboard2));
 		
 		assertTrue(obj.isEndGameDetected(chessboard2, 15));
 	}

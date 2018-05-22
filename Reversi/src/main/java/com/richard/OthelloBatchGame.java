@@ -45,7 +45,7 @@ public class OthelloBatchGame {
 			if (darkc == lightc) {
 				str.append(String.format("Draw (%s vs %s)\n", darkc, lightc));
 			} else {
-				char winner = darkc > lightc ? game.getdark() : game.getlight();
+				char winner = darkc > lightc ? game.getDark() : game.getLight();
 				str.append(String.format("Player '%s' wins (%s vs %s)\n"
 						, winner, darkc, lightc));
 			}
