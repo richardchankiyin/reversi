@@ -213,6 +213,7 @@ public class Othello
     	return i->getRightOperator().apply(getDownOperator().apply(i));
     }
     
+    @Deprecated
     protected List<UnaryOperator<Integer>> getAllOperators() {
     	List<UnaryOperator<Integer>> op = new ArrayList<UnaryOperator<Integer>>();
     	op.add(getUpOperator());
@@ -224,6 +225,13 @@ public class Othello
     	op.add(getDownLeftOperator());
     	op.add(getDownRightOperator());
     	return op;
+    }
+    
+    protected List<Displacement> getAllDisplacementOps() {
+    	return Arrays.asList(new VerticalBackwardDisplacement(), new VerticalForwardDisplacement()
+    	, new HorizontalBackwardDisplacement(), new HorizontalForwardDisplacement()
+    	, new DiagonalLeft2RightBackwardDisplacement(), new DiagonalLeft2RightForwardDisplacement()
+    	, new DiagonalRight2LeftBackwardDisplacement(), new DiagonalRight2LeftForwardDisplacement());
     }
     
     /**
@@ -297,11 +305,11 @@ public class Othello
      * 
      * @param diskType
      * @param chessboard
-     * @param checkdirectionops
+     * @param displacementops
      * @param startingpos
      * @return
      */
-    protected List<Integer> getListOfCoordinatesCanTurnDisk(char diskType, char[] chessboard, UnaryOperator<Integer> checkdirectionops, int startingpos) {
+    protected List<Integer> getListOfCoordinatesCanTurnDisk(char diskType, char[] chessboard, Displacement ops, int startingpos) {
     	if (!isValidDisk(diskType))
     		throw new IllegalArgumentException("disk invalid: " + diskType);
     	
@@ -311,7 +319,7 @@ public class Othello
     	List<Integer> result = new ArrayList<Integer>();
     	while (iscontinue) {
     		try {
-    			int nextpos = checkdirectionops.apply(pos);
+    			int nextpos = ops.next(pos);
     			if (chessboard[nextpos] == getCounterpartyDisk(diskType)) {
     				result.add(nextpos);
     				pos = nextpos;
@@ -333,7 +341,7 @@ public class Othello
     			isvalid = false;
     		}
     	}
-    	logger.debug("getListOfCoordinatesCanTurnDisk disk: {} op: {} startpos: {} isvalid: {} result: {}", diskType, checkdirectionops, startingpos, isvalid, result);
+    	logger.debug("getListOfCoordinatesCanTurnDisk disk: {} op: {} startpos: {} isvalid: {} result: {}", diskType, ops, startingpos, isvalid, result);
     	return isvalid ? result : new ArrayList<Integer>();
     }
     
@@ -366,7 +374,7 @@ public class Othello
     	
     	List<Integer> result = new ArrayList<Integer>();
     	
-    	getAllOperators().forEach(op->{result.addAll(getListOfCoordinatesCanTurnDisk(
+    	getAllDisplacementOps().forEach(op->{result.addAll(getListOfCoordinatesCanTurnDisk(
     		diskType, chessboard, op, startpos));});
     	
     	logger.debug("result from getListOfCoordinatesCanTurnDisk: {}", result);

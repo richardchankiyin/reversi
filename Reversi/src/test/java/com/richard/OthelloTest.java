@@ -663,22 +663,22 @@ public class OthelloTest {
 	@Test
 	public void testGetListOfCoordinatesCanTurnDiskFound() {
 		char[] chessboard = obj.initChessBoard();
-		List<Integer> result1 = obj.getListOfCoordinatesCanTurnDisk(obj.getDark(), chessboard, obj.getRightOperator(), 26);
+		List<Integer> result1 = obj.getListOfCoordinatesCanTurnDisk(obj.getDark(), chessboard, new HorizontalForwardDisplacement(), 26);
 		logger.debug("result1:{}", result1);
 		assertEquals(1, result1.size());
 		assertTrue(27==result1.get(0));
 		
-		List<Integer> result2 = obj.getListOfCoordinatesCanTurnDisk(obj.getDark(), chessboard, obj.getDownOperator(), 19);
+		List<Integer> result2 = obj.getListOfCoordinatesCanTurnDisk(obj.getDark(), chessboard, new VerticalForwardDisplacement(), 19);
 		logger.debug("result2:{}", result2);
 		assertEquals(1, result2.size());
 		assertTrue(27==result2.get(0));
 		
-		List<Integer> result3 = obj.getListOfCoordinatesCanTurnDisk(obj.getDark(), chessboard, obj.getUpOperator(), 44);
+		List<Integer> result3 = obj.getListOfCoordinatesCanTurnDisk(obj.getDark(), chessboard, new VerticalBackwardDisplacement(), 44);
 		logger.debug("result3:{}", result3);
 		assertEquals(1, result3.size());
 		assertTrue(36==result3.get(0));
 		
-		List<Integer> result4 = obj.getListOfCoordinatesCanTurnDisk(obj.getDark(), chessboard, obj.getLeftOperator(), 37);
+		List<Integer> result4 = obj.getListOfCoordinatesCanTurnDisk(obj.getDark(), chessboard, new HorizontalBackwardDisplacement(), 37);
 		logger.debug("result4:{}", result4);
 		assertEquals(1, result4.size());
 		assertTrue(36==result4.get(0));
@@ -687,16 +687,16 @@ public class OthelloTest {
 	@Test
 	public void testGetListOfCoordinatesCanTurnDiskNotFound() {
 		char[] chessboard = obj.initChessBoard();
-		List<Integer> result1 = obj.getListOfCoordinatesCanTurnDisk(obj.getDark(), chessboard, obj.getRightOperator(), 18);
+		List<Integer> result1 = obj.getListOfCoordinatesCanTurnDisk(obj.getDark(), chessboard, new HorizontalForwardDisplacement(), 18);
 		logger.debug("result1:{}", result1);
 		assertEquals(0, result1.size());
 		
-		List<Integer> result2 = obj.getListOfCoordinatesCanTurnDisk(obj.getDark(), chessboard, obj.getRightOperator(), 0);
+		List<Integer> result2 = obj.getListOfCoordinatesCanTurnDisk(obj.getDark(), chessboard, new HorizontalForwardDisplacement(), 0);
 		logger.debug("result2:{}", result2);
 		assertEquals(0, result2.size());
 		
 		// hitting edge
-		List<Integer> result3 = obj.getListOfCoordinatesCanTurnDisk(obj.getDark(), chessboard, obj.getLeftOperator(), 0);
+		List<Integer> result3 = obj.getListOfCoordinatesCanTurnDisk(obj.getDark(), chessboard, new HorizontalForwardDisplacement(), 0);
 		logger.debug("result3:{}", result3);
 		assertEquals(0, result3.size());
 		
@@ -706,7 +706,7 @@ public class OthelloTest {
 			logger.debug("after manually altering chessboard:\n{}", obj.getChessBoardStr(chessboard));
 		
 		// caught 1 light but eventually hit edge
-		List<Integer> result4 = obj.getListOfCoordinatesCanTurnDisk(obj.getDark(), chessboard, obj.getLeftOperator(), 1);
+		List<Integer> result4 = obj.getListOfCoordinatesCanTurnDisk(obj.getDark(), chessboard, new HorizontalBackwardDisplacement(), 1);
 		logger.debug("result4:{}", result4);
 		assertEquals(0, result4.size());
 	}
