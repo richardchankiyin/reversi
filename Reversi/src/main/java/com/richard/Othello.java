@@ -586,6 +586,7 @@ public class Othello
     }
 
     private void playGameCore(String step) {
+    	logger.info("Step: {} is progress...", step);
     	if (isEndGame()) {
     		throw new GameIsOverException();
     	}

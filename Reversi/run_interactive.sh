@@ -1,3 +1,4 @@
 #!/bin/bash
 
-mvn exec:java -Dexec.mainClass="com.richard.OthelloInteractiveGame" -Dexec.args="$1"
+jar="target/Reversi-jar-with-dependencies.jar"
+java -cp $jar com.richard.OthelloInteractiveGame 
