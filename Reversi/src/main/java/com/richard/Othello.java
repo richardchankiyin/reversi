@@ -63,8 +63,8 @@ public class Othello
 		return input == getDark() ? getLight() : getDark();
 	}
 	
-	protected final Set<Character> getRowindices() { return ROW_INDEX; }
-	protected final Set<Character> getColindices() { return COL_INDEX; }
+	protected final Set<Character> getRowIndices() { return ROW_INDEX; }
+	protected final Set<Character> getColIndices() { return COL_INDEX; }
     
     /**
      * This method aims to initialize
@@ -252,9 +252,9 @@ public class Othello
     	char c1 = input.charAt(0);
     	char c2 = input.charAt(1);
     	
-    	if (getRowindices().contains(c1) && getColindices().contains(c2)) {
+    	if (getRowIndices().contains(c1) && getColIndices().contains(c2)) {
     		return convertCharsCoordinates2Int(c1, c2);
-    	} else if (getRowindices().contains(c2) && getColindices().contains(c1)) {
+    	} else if (getRowIndices().contains(c2) && getColIndices().contains(c1)) {
     		return convertCharsCoordinates2Int(c2, c1);
     	} else {
     		throw new IllegalArgumentException("unknown combination: " + input);
