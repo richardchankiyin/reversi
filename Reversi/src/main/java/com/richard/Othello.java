@@ -97,6 +97,7 @@ public class Othello
      * 
      * @return
      */
+    @Deprecated
     protected UnaryOperator<Integer> getUpOperator() {
     	return i-> {
     		if (i >= 8 && i <= 63) {
@@ -114,6 +115,7 @@ public class Othello
      * 
      * @return
      */
+    @Deprecated
     protected UnaryOperator<Integer> getDownOperator() {
     	return i-> {
     		if (i >= 0 && i <= 55) {
@@ -131,6 +133,7 @@ public class Othello
      * 
      * @return
      */
+    @Deprecated
     protected UnaryOperator<Integer> getLeftOperator() {
     	return i-> {
     		if (i >= 0 && i <= 63) {
@@ -151,6 +154,7 @@ public class Othello
      * 
      * @return
      */
+    @Deprecated
     protected UnaryOperator<Integer> getRightOperator() {
     	return i-> {
     		if (i >= 0 && i <= 63) {
@@ -171,6 +175,7 @@ public class Othello
      * 
      * @return
      */
+    @Deprecated
     protected UnaryOperator<Integer> getUpLeftOperator() {
     	return i->getLeftOperator().apply(getUpOperator().apply(i));
     }
@@ -181,6 +186,7 @@ public class Othello
      * 
      * @return
      */
+    @Deprecated
     protected UnaryOperator<Integer> getUpRightOperator() {
     	return i->getRightOperator().apply(getUpOperator().apply(i));
     }
@@ -191,6 +197,7 @@ public class Othello
      * 
      * @return
      */
+    @Deprecated
     protected UnaryOperator<Integer> getDownLeftOperator() {
     	return i->getLeftOperator().apply(getDownOperator().apply(i));
     }
@@ -201,6 +208,7 @@ public class Othello
      * 
      * @return
      */
+    @Deprecated
     protected UnaryOperator<Integer> getDownRightOperator() {
     	return i->getRightOperator().apply(getDownOperator().apply(i));
     }
