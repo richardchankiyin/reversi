@@ -20,4 +20,9 @@ cd Reversi<br/>
 ./run_interactive.sh<br/><br/>
 For log checking, please check at Reversi/log/out.log
 
+Release Note
+=============
+1.0
+----
+Initial version
 
