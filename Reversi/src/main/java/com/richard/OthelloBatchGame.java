@@ -12,6 +12,8 @@ public class OthelloBatchGame {
 		}
 
 		Othello game = new Othello();
+		output("initialize....");
+		output(game.getChessBoardStr());
 		try {
 			game.playGame(args[0]);
 		}
@@ -31,6 +33,7 @@ public class OthelloBatchGame {
 			logger.info("steps:{}",game.getStepsGoneThrough());
 		}
 		
+		output("Current Chessboard:");
 		output(game.getChessBoardStr());
 		//output(game.getStepsGoneThrough().toString());
 		//output(String.valueOf(game.getLastRoundDetectedInvalid()));

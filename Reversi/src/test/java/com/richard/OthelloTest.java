@@ -92,10 +92,6 @@ public class OthelloTest {
 		assertEquals(expect, actual);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testUpOperatorResultInvalid1() {
-		obj.getUpOperator().apply(7);
-	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testVerticalBackwardDisplacementInvalid1() {
@@ -103,10 +99,6 @@ public class OthelloTest {
 		d.next(7);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testUpOperatorResultInvalid2() {
-		obj.getUpOperator().apply(65);
-	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testVerticalBackwardDisplacementInvalid2() {
@@ -114,11 +106,6 @@ public class OthelloTest {
 		d.next(65);
 	}
 
-	@Test
-	public void testUpOperatorResultValid() {
-		assertTrue(3 == obj.getUpOperator().apply(11));
-		assertTrue(20 == obj.getUpOperator().apply(28));
-	}
 	
 	@Test
 	public void testVerticalBackwardDisplacementValid() {
@@ -126,33 +113,17 @@ public class OthelloTest {
 		assertTrue(3 == d.next(11));
 		assertTrue(20 == d.next(28));
 	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testDownOperatorResultInvalid1() {
-		obj.getDownOperator().apply(-1);
-	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testVerticalForwardDisplacementInvalid1() {
 		Displacement d = new VerticalForwardDisplacement();
 		d.next(-1);
 	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testDownOperatorResultInvalid2() {
-		obj.getDownOperator().apply(60);
-	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testVerticalForwardDisplacementInvalid2() {
 		Displacement d = new VerticalForwardDisplacement();
 		d.next(60);
-	}
-
-	@Test
-	public void testDownOperatorResultValid() {
-		assertTrue(11 == obj.getDownOperator().apply(3));
-		assertTrue(28 == obj.getDownOperator().apply(20));
 	}
 	
 	@Test
@@ -162,10 +133,6 @@ public class OthelloTest {
 		assertTrue(28 == d.next(20));
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testLeftOperatorResultInvalid1() {
-		obj.getLeftOperator().apply(-1);
-	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testHorizontalDisplacementBackwardInvalid1() {
@@ -173,10 +140,6 @@ public class OthelloTest {
 		d.next(-1);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testLeftOperatorResultInvalid2() {
-		obj.getLeftOperator().apply(65);
-	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testHorizontalDisplacementBackwardInvalid2() {
@@ -184,19 +147,6 @@ public class OthelloTest {
 		d.next(65);
 	}
 
-	@Test
-	public void testLeftOperatorResultInvalid3() {
-		int exceptioncaught = 0;
-		for (int i = 0; i < 8; i++) {
-			try {
-				obj.getLeftOperator().apply(i * 8);
-			} catch (Exception e) {
-				exceptioncaught++;
-			}
-		}
-
-		assertEquals(8, exceptioncaught);
-	}
 	
 	@Test
 	public void testHorizontalDisplacementBackwardInvalid3() {
@@ -212,12 +162,7 @@ public class OthelloTest {
 
 		assertEquals(8, exceptioncaught);
 	}
-	
-	@Test
-	public void testLeftOperatorResultValid() {
-		assertTrue(0 == obj.getLeftOperator().apply(1));
-		assertTrue(10 == obj.getLeftOperator().apply(11));
-	}
+
 	
 	@Test
 	public void testHorizontalDisplacementBackwardValid() {
@@ -225,43 +170,20 @@ public class OthelloTest {
 		assertTrue(0 == d.next(1));
 		assertTrue(10 == d.next(11));
 	}
-	
-	
-	@Test(expected = IllegalArgumentException.class)
-	public void testRightOperatorResultInvalid1() {
-		obj.getRightOperator().apply(-1);
-	}
+
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testHorizontalForwardDisplacementInvalid1() {
 		Displacement d = new HorizontalForwardDisplacement();
 		d.next(-1);
 	}
-	
-	@Test(expected = IllegalArgumentException.class)
-	public void testRightOperatorResultInvalid2() {
-		obj.getRightOperator().apply(68);
-	}
-	
+
 	@Test(expected = IllegalArgumentException.class)
 	public void testHorizontalForwardDisplacementInvalid2() {
 		Displacement d = new HorizontalForwardDisplacement();
 		d.next(68);
 	}
-	
-	@Test
-	public void testRightOperatorResultInvalid3() {
-		int exceptioncaught = 0;
-		for (int i = 0; i < 8; i++) {
-			try {
-				obj.getRightOperator().apply(7 + i * 8);
-			} catch (Exception e) {
-				exceptioncaught++;
-			}
-		}
 
-		assertEquals(8, exceptioncaught);
-	}
 	
 	@Test
 	public void testHorizontalForwardDisplacementInvalid3() {
@@ -277,12 +199,7 @@ public class OthelloTest {
 
 		assertEquals(8, exceptioncaught);
 	}
-	
-	@Test
-	public void testRightOperatorResultValid() {
-		assertTrue(1 == obj.getRightOperator().apply(0));
-		assertTrue(12 == obj.getRightOperator().apply(11));
-	}
+
 	
 	@Test
 	public void testHorizontalForwardDisplacementValid() {
@@ -290,33 +207,7 @@ public class OthelloTest {
 		assertTrue(1 == d.next(0));
 		assertTrue(12 == d.next(11));
 	}
-	
-	@Test
-	public void testUpLeftOperatorResultsInvalid() {
-		int exceptioncaught = 0;
-		try {
-			obj.getUpLeftOperator().apply(5);
-		}
-		catch (Exception e) {
-			exceptioncaught++;
-		}
-		
-		try {
-			obj.getUpLeftOperator().apply(8);
-		}
-		catch (Exception e) {
-			exceptioncaught++;
-		}
-		
-		try {
-			obj.getUpLeftOperator().apply(68);
-		}
-		catch (Exception e) {
-			exceptioncaught++;
-		}
-		
-		assertTrue(3 == exceptioncaught);
-	}
+
 	
 	@Test
 	public void testDiagonalLeft2RightBackwardDisplacementResultsInvalid() {
@@ -346,45 +237,13 @@ public class OthelloTest {
 		assertTrue(3 == exceptioncaught);
 		
 	}
-	
-	@Test
-	public void testUpLeftOperatorResultsvalid() {
-		assertTrue(11 == obj.getUpLeftOperator().apply(20));
-		assertTrue(46 == obj.getUpLeftOperator().apply(55));
-	}
+
 	
 	@Test
 	public void testDiagonalLeft2RightBackwardDisplacementResultsValid() {
 		Displacement d = new DiagonalLeft2RightBackwardDisplacement();
 		assertTrue(11 == d.next(20));
 		assertTrue(46 == d.next(55));
-	}
-	
-	@Test
-	public void testDownLeftOperatorResultsInvalid() {
-		int exceptioncaught = 0;
-		try {
-			obj.getDownLeftOperator().apply(57);
-		}
-		catch (Exception e) {
-			exceptioncaught++;
-		}
-		
-		try {
-			obj.getDownLeftOperator().apply(-1);
-		}
-		catch (Exception e) {
-			exceptioncaught++;
-		}
-		
-		try {
-			obj.getDownLeftOperator().apply(16);
-		}
-		catch (Exception e) {
-			exceptioncaught++;
-		}
-		
-		assertTrue(3 == exceptioncaught);
 	}
 	
 	@Test
@@ -415,46 +274,11 @@ public class OthelloTest {
 		assertTrue(3 == exceptioncaught);
 	}
 	
-	
-	
-	@Test
-	public void testDownLeftOperatorResultsValid() {
-		assertTrue(27 == obj.getDownLeftOperator().apply(20));
-		assertTrue(40 == obj.getDownLeftOperator().apply(33));
-	}
-	
 	@Test
 	public void testDiagonalRight2LeftForwardDisplacementValid() {
 		Displacement d = new DiagonalRight2LeftForwardDisplacement();
 		assertTrue(27 == d.next(20));
 		assertTrue(40 == d.next(33));
-	}
-	
-	@Test
-	public void testUpRightOperatorResultsInvalid() {
-		int exceptioncaught = 0;
-		try {
-			obj.getUpRightOperator().apply(-1);
-		}
-		catch (Exception e) {
-			exceptioncaught++;
-		}
-		
-		try {
-			obj.getUpRightOperator().apply(7);
-		}
-		catch (Exception e) {
-			exceptioncaught++;
-		}
-		
-		try {
-			obj.getUpRightOperator().apply(15);
-		}
-		catch (Exception e) {
-			exceptioncaught++;
-		}
-		
-		assertTrue(3 == exceptioncaught);
 	}
 	
 	@Test
@@ -484,39 +308,7 @@ public class OthelloTest {
 		
 		assertTrue(3 == exceptioncaught);
 	}
-	
-	@Test
-	public void testUpRightOperatorResultsValid() {
-		assertTrue(6 == obj.getUpRightOperator().apply(13));
-		assertTrue(26 == obj.getUpRightOperator().apply(33));
-	}
-	
-	@Test
-	public void testDownRightOperatorResultsInvalid() {
-		int exceptioncaught = 0;
-		try {
-			obj.getDownRightOperator().apply(-1);
-		}
-		catch (Exception e) {
-			exceptioncaught++;
-		}
-		
-		try {
-			obj.getDownRightOperator().apply(60);
-		}
-		catch (Exception e) {
-			exceptioncaught++;
-		}
-		
-		try {
-			obj.getDownRightOperator().apply(23);
-		}
-		catch (Exception e) {
-			exceptioncaught++;
-		}
-		
-		assertTrue(3 == exceptioncaught);
-	}
+
 	
 	@Test
 	public void testDiagonalLeft2RightForwardDisplacementResultsInvalid() {
@@ -545,12 +337,7 @@ public class OthelloTest {
 		
 		assertTrue(3 == exceptioncaught);
 	}
-	
-	@Test
-	public void testDownRightOperatorResultsValid() {
-		assertTrue(29 == obj.getDownRightOperator().apply(20));
-		assertTrue(42 == obj.getDownRightOperator().apply(33));
-	}
+
 	
 	@Test
 	public void testDiagonalLeft2RightForwardResultsValid() {
@@ -957,7 +744,7 @@ public class OthelloTest {
 	public void testPlayGame() {
 		Othello game = new Othello();
 		String inputSteps = "f5, 6f, f7, 4f, f3, 3e, d3, c5";
-		game.playGame(inputSteps);
+		game.playGame(inputSteps, null, false);
 		
 		assertTrue(8==game.getNoOfRoundsPlayed());
 		List<String> steps = Arrays.asList(new String[]{"f5", "6f", "f7", "4f", "f3", "3e", "d3", "c5"});
@@ -987,7 +774,7 @@ public class OthelloTest {
 		// 1a is invalid move
 		String inputSteps = "f5, 6f, f7, 4f, f3, 3e, d3, c5, 1a, 5g";
 		try {
-			game.playGame(inputSteps);
+			game.playGame(inputSteps, null, false);
 		}
 		catch (InvalidMoveException ie) {
 			assertTrue(8==game.getNoOfRoundsPlayed());
@@ -1003,7 +790,7 @@ public class OthelloTest {
 		// 1a is invalid move
 		String inputSteps = "f5, 6f, f7, 4f, f3, 3e, d3, c5, 99, 5g";
 		try {
-			game.playGame(inputSteps);
+			game.playGame(inputSteps, null, false);
 		}
 		catch (InvalidMoveException ie) {
 			assertTrue(8==game.getNoOfRoundsPlayed());

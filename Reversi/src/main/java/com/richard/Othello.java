@@ -1,5 +1,6 @@
 package com.richard;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -648,23 +649,34 @@ public class Othello
     		}
     	}
     }
+
+    public void playGame(String inputSteps) {
+    	this.playGame(inputSteps, System.out, true);
+    }
     
     /**
      * The entry to play games in
      * batch mode
      * @param inputSteps
+     * @param out
+     * @parem isPrintRequired
      */
-    public void playGame(String inputSteps) {
+    public void playGame(String inputSteps, PrintStream out, boolean isPrintRequired ) {
+    	
     	try {
 	    	Arrays.asList(inputSteps.split(",")).forEach(
 	    		step -> {
 	    			String step2 = step.trim().toLowerCase();
 	    			this.playGameSingleRound(step2);
+	    			if (isPrintRequired) {
+		    			out.printf("Step: %s\n", step);
+		    			out.printf("--------------\n%s\n", this.getChessBoardStr());
+	    			}
 	    		}
 	    	);
     	} catch (RuntimeException re) {
     		logger.error("issue found during running through the steps...", re);
     		throw re;
-    	}
+    	} 
     }
 }
